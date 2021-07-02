@@ -1,0 +1,8 @@
+{
+  "name": "Bifocals",
+  "description": "Gnome extension adding more window management keyboard shortcuts",
+  "uuid": "bifocals@shiznatix",
+  "shell-version": [
+    "3.38"
+  ]
+}
