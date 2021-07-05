@@ -1,6 +1,9 @@
 # bifocals-gnome-extension
 Gnome extension adding more window management keyboard shortcuts
 
+# Installation
+Install from gnome-extensions: https://extensions.gnome.org/extension/4375/bifocals/
+
 # Shortcuts
 All shortcuts can be modified in the preferences. See `gnome-tweaks`.
 
