@@ -15,6 +15,8 @@ All shortcuts can be modified in the preferences. See `gnome-tweaks`.
 
 
 # Helpful commands & links
+* `journalctl -f -o cat /usr/bin/gnome-shell` Follow logs
+* `&lt;Alt&gt;+F2` then `r` - Restart Gnome
 * `gnome-extensions prefs bifocals@shiznatix` Open preferences dialog
 * `glib-compile-schemas schemas` Must be run after any changes to gchema.xml
 * Typescript Gnome types (incomplete) https://raw.githubusercontent.com/gTile/gTile/master/gnometypes.ts
