@@ -2,6 +2,8 @@
 Gnome extension adding more window management keyboard shortcuts
 
 # Shortcuts
+All shortcuts can be modified in the preferences. See `gnome-tweaks`.
+
 | Name | Description | Default Keybinding |
 | ---- | ----------- | ------------------ |
 | `toggle-left` | Toggle size while anchored to the left. Toggles through 3 sizes:<ul><li>1/3 width</li> <li>1/2 width</li> <li>2/3 width</li></ul> | &lt;Super&gt;+&lt;Alt&gt;+Left |
