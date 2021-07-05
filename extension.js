@@ -24,23 +24,26 @@ function getActiveWindow() {
 
 function getRectangles(window) {
 	const rect = window.get_frame_rect();
-	const [displayWidth, displayHeight] = window.get_display().get_size();
+	const monitor = window.get_monitor();
+	const workspace = window.get_workspace();
+	const monitorWorkArea = workspace.get_work_area_for_monitor(monitor);
 
 	return {
 		window: {
 			h: rect.height,
 			w: rect.width,
 		},
-		display: {
-			h: displayHeight,
-			w: displayWidth,
+		workspace: {
+			x: monitorWorkArea.x,
+			h: monitorWorkArea.height,
+			w: monitorWorkArea.width,
 		},
 	};
 }
 
-function getResizeWidth(displayWidth, windowWidth) {
-	const size1 = displayWidth / 3;
-	const size2 = displayWidth / 2;
+function getResizeWidth(workspaceWidth, windowWidth) {
+	const size1 = workspaceWidth / 3;
+	const size2 = workspaceWidth / 2;
 	const size3 = size1 * 2;
 	const c = 10;
 
@@ -67,21 +70,15 @@ function enable() {
 	const flag = Meta.KeyBindingFlags.IGNORE_AUTOREPEAT;
 	const settings = getSettings();
 
-	Main.wm.addKeybinding('fullscreen', settings, flag, mode, () => {
-		const window = getActiveWindow();
-
-		window.maximize(Meta.MaximizeFlags.BOTH);
-	});
-
 	Main.wm.addKeybinding('midscreen', settings, flag, mode, () => {
 		const window = getActiveWindow();
 		const rects = getRectangles(window);
-		const fourthWidth = rects.display.w / 4;
-		const fourthHeight = rects.display.h / 4;
-		const xStart = (rects.display.w - (rects.display.w - fourthWidth)) / 2;
-		const yStart = (rects.display.h - (rects.display.h - fourthHeight)) / 2;
-		const newWidth = rects.display.w - fourthWidth;
-		const newHeight = rects.display.h - fourthHeight;
+		const fourthWidth = rects.workspace.w / 4;
+		const fourthHeight = rects.workspace.h / 4;
+		const xStart = rects.workspace.x + (rects.workspace.w - (rects.workspace.w - fourthWidth)) / 2;
+		const yStart = (rects.workspace.h - (rects.workspace.h - fourthHeight)) / 2;
+		const newWidth = rects.workspace.w - fourthWidth;
+		const newHeight = rects.workspace.h - fourthHeight;
 
 		window.unmaximize(Meta.MaximizeFlags.BOTH);
 		window.move_frame(false, xStart, yStart);
@@ -91,19 +88,19 @@ function enable() {
 	Main.wm.addKeybinding('toggle-left', settings, flag, mode, () => {
 		const window = getActiveWindow();
 		const rects = getRectangles(window);
-		const newWidth = getResizeWidth(rects.display.w, rects.window.w);
+		const newWidth = getResizeWidth(rects.workspace.w, rects.window.w);
 
 		window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-		window.move_frame(false, 0, 0);
-		window.move_resize_frame(false, 0, 0, newWidth, rects.window.h);
+		window.move_frame(false, rects.workspace.x, 0);
+		window.move_resize_frame(false, rects.workspace.x, 0, newWidth, rects.window.h);
 		window.maximize(Meta.MaximizeFlags.VERTICAL);
 	});
 
 	Main.wm.addKeybinding('toggle-right', settings, flag, mode, () => {
 		const window = getActiveWindow();
 		const rects = getRectangles(window);
-		const newWidth = getResizeWidth(rects.display.w, rects.window.w);
-		const xStart = rects.display.w - newWidth;
+		const newWidth = getResizeWidth(rects.workspace.w, rects.window.w);
+		const xStart = rects.workspace.x + rects.workspace.w - newWidth;
 
 		window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
 		window.move_frame(false, xStart, 0);
@@ -114,7 +111,6 @@ function enable() {
 
 // eslint-disable-next-line no-unused-vars
 function disable() {
-	Main.wm.removeKeybinding('fullscreen');
 	Main.wm.removeKeybinding('midscreen');
 	Main.wm.removeKeybinding('toggle-left');
 	Main.wm.removeKeybinding('toggle-right');
