@@ -5,12 +5,14 @@ Gnome extension adding more window management keyboard shortcuts
 Install from gnome-extensions: https://extensions.gnome.org/extension/4375/bifocals/
 
 # Shortcuts
-All shortcuts can be modified in the preferences. See `gnome-tweaks`.
+All shortcuts can be modified in the preferences. See `gnome-tweaks` or `extensions`.
 
 | Name | Description | Default Keybinding |
 | ---- | ----------- | ------------------ |
-| `toggle-left` | Toggle size while anchored to the left. Toggles through 3 sizes:<ul><li>1/3 width</li> <li>1/2 width</li> <li>2/3 width</li></ul> | &lt;Super&gt;+&lt;Alt&gt;+Left |
-| `toggle-right` | Toggle size while anchored to the right. Toggles through 3 sizes:<ul><li>1/3 width</li> <li>1/2 width</li> <li>2/3 width</li></ul> | &lt;Super&gt;+&lt;Alt&gt;+Right |
+| `toggle-left` | Toggle size while anchored to the left. Toggles through 3 sizes:<ul><li>1/3 width</li> <li>1/2 width</li> <li>2/3 width</li></ul> | &lt;Super&gt;+&lt;Ctrl&gt;+Left |
+| `toggle-right` | Toggle size while anchored to the right. Toggles through 3 sizes:<ul><li>1/3 width</li> <li>1/2 width</li> <li>2/3 width</li></ul> | &lt;Super&gt;+&lt;Ctrl&gt;+Right |
+| `toggle-top` | Toggle height while anchored to the top. Toggles through 3 sizes:<ul><li>1/3 height</li> <li>1/2 height</li> <li>2/3 height</li></ul> | &lt;Super&gt;+&lt;Ctrl&gt;+Up |
+| `toggle-bottom` | Toggle height while anchored to the bottom. Toggles through 3 sizes:<ul><li>1/3 height</li> <li>1/2 height</li> <li>2/3 height</li></ul> | &lt;Super&gt;+&lt;Ctrl&gt;+Down |
 | `midscreen` | Move the window to the middle of the screen and make the height and width each 1/4th of their respective axis size. | &lt;Super&gt;+&lt;Alt&gt;+m |
 
 

@@ -8,6 +8,8 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const prettyNames = {
 	'toggle-left': 'Global Toggle size while anchored to the left',
 	'toggle-right': 'Global Toggle size while anchored to the right',
+	'toggle-top': 'Global Toggle size while anchored to the top',
+	'toggle-bottom': 'Global Toggle size while anchored to the bottom',
 	'midscreen': 'Global Put in the middle of the screen',
 };
 
@@ -16,7 +18,7 @@ function init() {
 }
 
 function appendHotkey(model, settings, name, prettyName) {
-	let key, mods;
+	let key, mods, _;
 
 	if (Gtk.get_major_version() >= 4) {
 		// ignore ok as failure treated as disabled
@@ -27,7 +29,7 @@ function appendHotkey(model, settings, name, prettyName) {
 
 	const row = model.insert(-1);
 
-	model.set(row, [0, 1, 2, 3], [name, prettyName, mods, key ]);
+	model.set(row, [0, 1, 2, 3], [name, prettyName, mods, key]);
 }
 
 function setChild(widget, child) {

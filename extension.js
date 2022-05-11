@@ -1,11 +1,8 @@
 const { Gio, Shell, Meta } = imports.gi;
 const Main = imports.ui.main;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Phi = 1.618033988749895;
-const Fourth = 1.0/4.0;
-const Third = 1.0/3.0;
-const Half = 1.0/2.0;
-const Pad = 20;
+const WidthDelta = 10;
+const HeightDelta = 11;
 
 function getSettings() {
 	const GioSSS = Gio.SettingsSchemaSource;
@@ -37,51 +34,34 @@ function getRectangles(window) {
 		window: {
 			h: rect.height,
 			w: rect.width,
+			x: rect.x,
+			y: rect.y,
 		},
 		workspace: {
-			x: monitorWorkArea.x,
 			h: monitorWorkArea.height,
 			w: monitorWorkArea.width,
-		},
-		target: {
-			h: monitorWorkArea.height * (Phi - 1),
-			w: monitorWorkArea.width * (2 - Phi),
+			x: monitorWorkArea.x,
+			y: monitorWorkArea.y,
 		},
 	};
 }
 
-function getResizeWidth(workspaceWidth, windowWidth) {
-	const size1 = workspaceWidth * Fourth;
-	const size2 = workspaceWidth * Third;
-	const size3 = workspaceWidth * (2 - Phi);
-	const size4 = workspaceWidth * Half;
-	const size5 = workspaceWidth * (Phi - 1);
+function getResizeVal(workspaceAxis, windowAxis, c) {
+	const size1 = workspaceAxis / 3;
+	const size2 = workspaceAxis / 2;
+	const size3 = size1 * 2;
 
-	if (windowWidth + 1 < size1) {
+	if (windowAxis < size1 - c) {
 		return size1;
 	}
-	if (windowWidth + 1 < size2) {
+	if (windowAxis < size2 - c) {
 		return size2;
 	}
-	if (windowWidth + 1 < size3) {
+	if (windowAxis < size3 - c) {
 		return size3;
-	}
-	if (windowWidth + 1 < size4) {
-		return size4;
-	}
-	if (windowWidth + 1 < size5) {
-		return size5;
 	}
 
 	return size1;
-}
-
-function centerWindow(window, workspace, height, width) {
-	const x = workspace.x + (workspace.w - width) / 2;
-	const y = (workspace.h - height) / 2;
-	window.unmaximize(Meta.MaximizeFlags.BOTH);
-	window.move_frame(false, x, y);
-	window.move_resize_frame(false, x, y, width, height);
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -97,48 +77,62 @@ function enable() {
 	Main.wm.addKeybinding('midscreen', settings, flag, mode, () => {
 		const window = getActiveWindow();
 		const rects = getRectangles(window);
-		if (rects.target.h < rects.window.h + 1) {
-			centerWindow(window, rects.workspace, rects.target.h, rects.target.w);
-		} else {
-			centerWindow(window, rects.workspace, rects.window.h, rects.window.w);
-		}
+		const fourthWidth = rects.workspace.w / 4;
+		const fourthHeight = rects.workspace.h / 4;
+		const xStart = rects.workspace.x + (rects.workspace.w - (rects.workspace.w - fourthWidth)) / 2;
+		const yStart = (rects.workspace.h - (rects.workspace.h - fourthHeight)) / 2;
+		const newWidth = rects.workspace.w - fourthWidth;
+		const newHeight = rects.workspace.h - fourthHeight;
+
+		window.unmaximize(Meta.MaximizeFlags.BOTH);
+		window.move_frame(false, xStart, yStart);
+		window.move_resize_frame(false, xStart, yStart, newWidth, newHeight);
 	});
 
 	Main.wm.addKeybinding('toggle-left', settings, flag, mode, () => {
 		const window = getActiveWindow();
 		const rects = getRectangles(window);
-		if (rects.target.h < rects.window.h + 1 || rects.target.w < rects.window.w + 1) {
-		  const newWidth = getResizeWidth(rects.workspace.w, rects.window.w);
-			window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-			window.move_frame(false, rects.workspace.x, 0);
-			window.move_resize_frame(false, rects.workspace.x, 0, newWidth, rects.window.h);
-			window.maximize(Meta.MaximizeFlags.VERTICAL);
-		} else {
-			var w = rects.workspace.w/2 - 3*rects.window.w/2 - Pad;
-			if (w<1) { w = 1; }
-			var h = rects.workspace.h/2 - rects.window.h/2;
-			if (h<1) { h = 1; }
-			window.move_frame(false, w, h);
-		}
+		const newWidth = getResizeVal(rects.workspace.w, rects.window.w, WidthDelta);
+
+		window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
+		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+		window.move_frame(false, rects.workspace.x, 0);
+		window.move_resize_frame(false, rects.workspace.x, 0, newWidth, rects.window.h);
+		window.maximize(Meta.MaximizeFlags.VERTICAL);
 	});
 
 	Main.wm.addKeybinding('toggle-right', settings, flag, mode, () => {
 		const window = getActiveWindow();
 		const rects = getRectangles(window);
-		if (rects.target.h < rects.window.h + 1) {
-		  const newWidth = getResizeWidth(rects.workspace.w, rects.window.w);
-		  const xStart = rects.workspace.x + rects.workspace.w - newWidth;
-		  window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-		  window.move_frame(false, xStart, 0);
-		  window.move_resize_frame(false, xStart, 0, newWidth, rects.window.h);
-		  window.maximize(Meta.MaximizeFlags.VERTICAL);
-		}else{
-			var w = rects.workspace.w/2 + rects.window.w/2 + Pad;
-			if (w<1) { w = 1; }
-			var h = rects.workspace.h/2 - rects.window.h/2;
-			if (h<1) { h = 1; }
-			window.move_frame(false, w, h);
-		}
+		const newWidth = getResizeVal(rects.workspace.w, rects.window.w, WidthDelta);
+		const xStart = rects.workspace.x + rects.workspace.w - newWidth;
+
+		window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
+		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+		window.move_frame(false, xStart, 0);
+		window.move_resize_frame(false, xStart, 0, newWidth, rects.window.h);
+		window.maximize(Meta.MaximizeFlags.VERTICAL);
+	});
+
+	Main.wm.addKeybinding('toggle-top', settings, flag, mode, () => {
+		const window = getActiveWindow();
+		const rects = getRectangles(window);
+		const newHeight = getResizeVal(rects.workspace.h, rects.window.h, HeightDelta);
+
+		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+		window.move_frame(false, rects.window.x, 0);
+		window.move_resize_frame(false, rects.window.x, 0, rects.window.w, newHeight);
+	});
+
+	Main.wm.addKeybinding('toggle-bottom', settings, flag, mode, () => {
+		const window = getActiveWindow();
+		const rects = getRectangles(window);
+		const newHeight = getResizeVal(rects.workspace.h, rects.window.h, HeightDelta);
+		const yStart = rects.workspace.h - newHeight + 100;
+
+		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+		window.move_frame(false, rects.window.x, yStart);
+		window.move_resize_frame(false, rects.window.x, yStart, rects.window.w, newHeight);
 	});
 }
 
@@ -147,4 +141,6 @@ function disable() {
 	Main.wm.removeKeybinding('midscreen');
 	Main.wm.removeKeybinding('toggle-left');
 	Main.wm.removeKeybinding('toggle-right');
+	Main.wm.removeKeybinding('toggle-top');
+	Main.wm.removeKeybinding('toggle-bottom');
 }
