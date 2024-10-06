@@ -1,6 +1,3 @@
 node_modules
-.eslintrc.js
-package.json
-package-lock.json
-.nvmrc
 bifocals.zip
+dist
