@@ -26,9 +26,9 @@ export const ShortcutRow = GObject.registerClass({
         'Press <b>ESC</b> to close the dialog.\n' +
         'Press <b>BackSpace</b> to unset the keybinding.';
 
-	settings: Gio.Settings;
-	schemaKey: string;
-	window: Gtk.Window;
+	#settings: Gio.Settings;
+	#schemaKey: string;
+	#window: Gtk.Window;
 	
 	constructor({ settings, schemaKey, window, ...config }: ShortcutParams) {
 		super({
@@ -37,19 +37,19 @@ export const ShortcutRow = GObject.registerClass({
 			title: settings.settings_schema.get_key(schemaKey).get_summary() ?? undefined,
 		});
 	
-		this.settings = settings;
-		this.schemaKey = schemaKey;
-		this.window = window;
+		this.#settings = settings;
+		this.#schemaKey = schemaKey;
+		this.#window = window;
 	
 		const label = new Gtk.Label({
-			label: this.label(),
+			label: this.#label(),
 			use_markup: true,
 			xalign: 0,
 		});
 	
 		const resetBtn = new Gtk.Button({
 			valign: Gtk.Align.CENTER,
-			visible: this.isCustomized(),
+			visible: this.#isCustomized(),
             icon_name: 'edit-clear-symbolic',
 			tooltip_text: 'Reset the shortcut to its default value',
 			css_classes: ['flat', 'circular'],
@@ -58,48 +58,48 @@ export const ShortcutRow = GObject.registerClass({
 		this.add_suffix(label);
 		this.add_suffix(resetBtn);
 	
-		this.connect('activated', this.onRebindKey.bind(this));
-		resetBtn.connect('clicked', () => this.settings.reset(this.schemaKey));
-		this.settings.connect(`changed::${schemaKey}`, () => {
-			label.label = this.label();
-			resetBtn.visible = this.isCustomized();
+		this.connect('activated', this.#onRebindKey.bind(this));
+		resetBtn.connect('clicked', () => this.#settings.reset(this.#schemaKey));
+		this.#settings.connect(`changed::${schemaKey}`, () => {
+			label.label = this.#label();
+			resetBtn.visible = this.#isCustomized();
 		});
 	}
 	
-	isCustomized() {
-		return this.settings.get_user_value(this.schemaKey) !== null;
+	#isCustomized() {
+		return this.#settings.get_user_value(this.#schemaKey) !== null;
 	}
 	
-	escape(s: string) {
+	#escape(s: string) {
 		return s.replace(/(<|>)/g, (c) => ({
 			'<': '&lt;',
 			'>': '&gt;',
 		}[c]!));
 	}
 	
-	label() {
-		const current = this.settings.get_strv(this.schemaKey);
+	#label() {
+		const current = this.#settings.get_strv(this.#schemaKey);
 		const shortcuts = current.length > 0
-			? this.escape(current.join(', '))
-			: this.escape('<Unset>');
+			? this.#escape(current.join(', '))
+			: this.#escape('<Unset>');
 	
-		return this.isCustomized() ? `<b>${shortcuts}</b>` : shortcuts;
+		return this.#isCustomized() ? `<b>${shortcuts}</b>` : shortcuts;
 	}
 	
-	addKeybinding(shortcut: string) {
-		const set = new Set([...this.settings.get_strv(this.schemaKey), shortcut]);
-		this.settings.set_strv(this.schemaKey, Array.from(set));
+	#addKeybinding(shortcut: string) {
+		const set = new Set([...this.#settings.get_strv(this.#schemaKey), shortcut]);
+		this.#settings.set_strv(this.#schemaKey, Array.from(set));
 	}
 	
-	replaceKeybinding(shortcut: string) {
-		this.settings.set_strv(this.schemaKey, [shortcut]);
+	#replaceKeybinding(shortcut: string) {
+		this.#settings.set_strv(this.#schemaKey, [shortcut]);
 	}
 	
-	unsetKeybinding() {
-		this.settings.set_strv(this.schemaKey, []);
+	#unsetKeybinding() {
+		this.#settings.set_strv(this.#schemaKey, []);
 	}
 	
-	onRebindKey() {
+	#onRebindKey() {
 		// `undefined` resembles the state which awaits user input
 		// `null` resembles an unbound/empty shortcut (ε)
 		let acceleratorName: string | null | undefined = undefined;
@@ -113,7 +113,7 @@ export const ShortcutRow = GObject.registerClass({
 			body: `await input…\n\n${ShortcutRow.helpText}`,
 			body_use_markup: true,
 			modal: true,
-			transient_for: this.window,
+			transient_for: this.#window,
 		});
 		dialog.add_controller(eventController);
 	
@@ -127,10 +127,13 @@ export const ShortcutRow = GObject.registerClass({
 	
 		dialog.connect('response', (_, response: 'add' | 'replace' | 'close') => {
 			if (acceleratorName === null) {
-				this.unsetKeybinding();
+				this.#unsetKeybinding();
 			} else if (acceleratorName) {
-				response === 'add' && this.addKeybinding(acceleratorName);
-				response === 'replace' && this.replaceKeybinding(acceleratorName);
+				if (response === 'add') {
+                    this.#addKeybinding(acceleratorName);
+                } else if (response === 'replace') {
+                    this.#replaceKeybinding(acceleratorName);
+                }
 			}
 		
 			dialog.close();
@@ -139,7 +142,7 @@ export const ShortcutRow = GObject.registerClass({
 		eventController.connect('key-pressed', (ctrl, _, code, state) => {
 			const event = ctrl.get_current_event() as Gdk.KeyEvent;
 			const display = event.get_display()!;
-			const { keyval, modifier } = this.normalizeKeyvalAndMask(display, code, state, ctrl.get_group());
+			const { keyval, modifier } = this.#normalizeKeyvalAndMask(display, code, state, ctrl.get_group());
 		
 			if (event.is_modifier()) {
 				return Gdk.EVENT_STOP;
@@ -163,10 +166,10 @@ export const ShortcutRow = GObject.registerClass({
                             acceleratorName = Gtk.accelerator_name(keyval, modifier);
                             break;
 						} else if (acceleratorName === null) {
-                            this.unsetKeybinding();
+                            this.#unsetKeybinding();
                             dialog.close();
 						} else {
-                            this.replaceKeybinding(acceleratorName);
+                            this.#replaceKeybinding(acceleratorName);
                             dialog.close();
 						}
 						return Gdk.EVENT_STOP;
@@ -177,7 +180,7 @@ export const ShortcutRow = GObject.registerClass({
 			}
 		
 			const name = acceleratorName ?? '<Unset>';
-			dialog.body = `${this.escape(name)}\n\n${ShortcutRow.helpText}`;
+			dialog.body = `${this.#escape(name)}\n\n${ShortcutRow.helpText}`;
 			dialog.set_response_enabled('replace', true);
 			dialog.set_response_enabled('add', acceleratorName !== null);
 		
@@ -188,7 +191,7 @@ export const ShortcutRow = GObject.registerClass({
 	}
 	
 	// https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/a936ac6bc9d5a01dd2c3fcb905189570ecd72753/panels/keyboard/keyboard-shortcuts.c#L388
-	normalizeKeyvalAndMask(
+	#normalizeKeyvalAndMask(
 		display: Gdk.Display,
 		code: number,
 		mask: Gdk.ModifierType,
@@ -206,7 +209,7 @@ export const ShortcutRow = GObject.registerClass({
 		let explicitModifiers = Gtk.accelerator_get_default_mod_mask();
 	
 		// We want shift to always be included as explicit modifier for gnome-shell
-		// shortcuts.That's because users usually think of shortcuts as including
+		// shortcuts. That's because users usually think of shortcuts as including
 		// the shift key rather than being defined for the shifted keyval.
 		// This helps with num - row keys which have different keyvals on different
 		// layouts for example, but also with keys that have explicit key codes at

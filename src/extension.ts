@@ -1,184 +1,176 @@
-// import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import Shell from 'gi://Shell';
+import Meta from 'gi://Meta';
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-export default class ExampleExtension extends Extension {
-	enable() {
-		console.debug(`enabling ${this.metadata.name}`);
+interface RectangleDimensions {
+	h: number;
+	w: number;
+	x: number;
+	y: number;
+}
+interface Rectangles {
+	window: RectangleDimensions;
+	workspace: RectangleDimensions;
+}
+
+class Resizable {
+	window: Meta.Window;
+	rectangles: Rectangles;
+
+	constructor() {
+		const window = global.workspace_manager
+			.get_active_workspace()
+			.list_windows()
+			.find(window => window.has_focus());
+		
+		if (!window) {
+			throw new Error('Cannot find active window');
+		}
+
+		this.window = window;
+
+		const rect = this.window.get_frame_rect();
+		const monitor = this.window.get_monitor();
+		const workspace = this.window.get_workspace();
+		const monitorWorkArea = workspace.get_work_area_for_monitor(monitor);
+
+		this.rectangles = {
+			window: {
+				h: rect.height,
+				w: rect.width,
+				x: rect.x,
+				y: rect.y,
+			},
+			workspace: {
+				h: monitorWorkArea.height,
+				w: monitorWorkArea.width,
+				x: monitorWorkArea.x,
+				y: monitorWorkArea.y,
+			},
+		};
 	}
 
-	disable() {
-		console.debug(`disabling ${this.metadata.name}`);
+	getResizeVal(dimensionKey: keyof RectangleDimensions) {
+		const workspaceAxis = this.rectangles.workspace[dimensionKey];
+		const windowAxis = this.rectangles.window[dimensionKey];
+		const size1 = workspaceAxis / 3;
+		const size2 = workspaceAxis / 2;
+		const size3 = size1 * 2;
+
+		if (windowAxis < size1) {
+			return size1;
+		}
+		if (windowAxis < size2) {
+			return size2;
+		}
+		if (windowAxis < size3) {
+			return size3;
+		}
+
+		return size1;
 	}
 }
 
-// // import Gio from 'gi://Gio';
-// // import St from 'gi://St';
+export default class BifocalsExtension extends Extension {
+	static KEYBINDING_MODE = Shell.ActionMode.NORMAL;
+	static KEYBINDING_FLAG = Meta.KeyBindingFlags.IGNORE_AUTOREPEAT;
 
-// import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
-// // import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-// // import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+	#settings!: Gio.Settings | null;
 
+	enable() {
+		this.#settings = this.getSettings();
 
-// export default class BifocalsExtension extends Extension {
-// 	enable() {
-// 		this._settings = this.getSettings();
-// 		console.log('>>>>>>>>>>>>>>>>>>.1')
-// 		console.log(this._settings)
-// 		console.log('>>>>>>>>>>>>>>>>>>.2')
-// 	}
+		this.#addKeybinding('midscreen', (resizable) => {
+			const { rectangles, window } = resizable;
+			const fourthWidth = rectangles.workspace.w / 4;
+			const fourthHeight = rectangles.workspace.h / 4;
+			const xStart = rectangles.workspace.x + (rectangles.workspace.w - (rectangles.workspace.w - fourthWidth)) / 2;
+			const yStart = (rectangles.workspace.h - (rectangles.workspace.h - fourthHeight)) / 2;
+			const newWidth = rectangles.workspace.w - fourthWidth;
+			const newHeight = rectangles.workspace.h - fourthHeight;
 
-// 	disable() {
-// 		this._settings = null;
-// 	}
-// }
+			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			window.move_frame(false, xStart, yStart);
+			window.move_resize_frame(false, xStart, yStart, newWidth, newHeight);
+		});
 
+		this.#addKeybinding('toggle-left', (resizable) => {
+			const { rectangles, window } = resizable;
+			const newWidth = resizable.getResizeVal('w');
 
+			window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
+			// window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+			window.move_frame(false, rectangles.workspace.x, 0);
+			window.move_resize_frame(false, rectangles.workspace.x, 0, newWidth, rectangles.window.h);
+			window.maximize(Meta.MaximizeFlags.VERTICAL);
+		});
 
-// ORIG BELOW
-// const { Gio, Shell, Meta } = imports.gi;
-// const Main = imports.ui.main;
-// const Me = imports.misc.extensionUtils.getCurrentExtension();
-// const WidthDelta = 10;
-// const HeightDelta = 11;
+		this.#addKeybinding('toggle-right', (resizable) => {
+			const { rectangles, window } = resizable;
+			const newWidth = resizable.getResizeVal('w');
+			const xStart = rectangles.workspace.x + rectangles.workspace.w - newWidth;
 
-// function getSettings() {
-// 	const GioSSS = Gio.SettingsSchemaSource;
-// 	const schemaSource = GioSSS.new_from_directory(
-// 		Me.dir.get_child('schemas').get_path(),
-// 		GioSSS.get_default(),
-// 		false,
-// 	);
-// 	const schemaObj = schemaSource.lookup('org.gnome.shell.extensions.bifocals', true);
+			window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
+			// window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+			window.move_frame(false, xStart, 0);
+			window.move_resize_frame(false, xStart, 0, newWidth, rectangles.window.h);
+			window.maximize(Meta.MaximizeFlags.VERTICAL);
+		});
 
-// 	if (!schemaObj) {
-// 		throw new Error('cannot find schemas');
-// 	}
+		this.#addKeybinding('toggle-top', (resizable) => {
+			const { rectangles, window } = resizable;
+			const newHeight = resizable.getResizeVal('h');
 
-// 	return new Gio.Settings({ settings_schema: schemaObj });
-// }
+			window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+			window.move_frame(false, rectangles.window.x, 0);
+			window.move_resize_frame(false, rectangles.window.x, 0, rectangles.window.w, newHeight);
+		});
 
-// function getActiveWindow() {
-// 	return global.workspace_manager.get_active_workspace().list_windows().find(window => window.has_focus());
-// }
+		this.#addKeybinding('toggle-bottom', (resizable) => {
+			const { rectangles, window } = resizable;
+			const newHeight = resizable.getResizeVal('h');
+			const yStart = rectangles.workspace.h - newHeight + 100;
 
-// function getRectangles(window) {
-// 	const rect = window.get_frame_rect();
-// 	const monitor = window.get_monitor();
-// 	const workspace = window.get_workspace();
-// 	const monitorWorkArea = workspace.get_work_area_for_monitor(monitor);
+			window.unmaximize(Meta.MaximizeFlags.VERTICAL);
+			window.move_frame(false, rectangles.window.x, yStart);
+			window.move_resize_frame(false, rectangles.window.x, yStart, rectangles.window.w, newHeight);
+		});
+	}
 
-// 	return {
-// 		window: {
-// 			h: rect.height,
-// 			w: rect.width,
-// 			x: rect.x,
-// 			y: rect.y,
-// 		},
-// 		workspace: {
-// 			h: monitorWorkArea.height,
-// 			w: monitorWorkArea.width,
-// 			x: monitorWorkArea.x,
-// 			y: monitorWorkArea.y,
-// 		},
-// 	};
-// }
+	disable() {
+		this.#removeKeybinding('midscreen');
+		this.#removeKeybinding('toggle-left');
+		this.#removeKeybinding('toggle-right');
+		this.#removeKeybinding('toggle-top');
+		this.#removeKeybinding('toggle-bottom');
+		this.#settings = null;
+	}
 
-// function getResizeVal(workspaceAxis, windowAxis, c) {
-// 	const size1 = workspaceAxis / 3;
-// 	const size2 = workspaceAxis / 2;
-// 	const size3 = size1 * 2;
+	#addKeybinding(name: string, handler: (resizable: Resizable) => void) {
+		if (!this.#settings) {
+			console.error('Cannot bind key, `settings` is not initialized');
+			return;
+		}
 
-// 	if (windowAxis < size1 - c) {
-// 		return size1;
-// 	}
-// 	if (windowAxis < size2 - c) {
-// 		return size2;
-// 	}
-// 	if (windowAxis < size3 - c) {
-// 		return size3;
-// 	}
+		Main.wm.addKeybinding(
+			name,
+			this.#settings,
+			BifocalsExtension.KEYBINDING_FLAG,
+			BifocalsExtension.KEYBINDING_MODE,
+			() => {
+				try {
+					return handler(new Resizable());
+				} catch (error) {
+					console.error(`Keybinding ${name} callback error`, error);
+				}
+			},
+		);
+	}
 
-// 	return size1;
-// }
-
-// // eslint-disable-next-line no-unused-vars
-// function init() {
-// }
-
-// // eslint-disable-next-line no-unused-vars
-// function enable() {
-// 	const mode = Shell.ActionMode.NORMAL;
-// 	const flag = Meta.KeyBindingFlags.IGNORE_AUTOREPEAT;
-// 	const settings = getSettings();
-
-// 	Main.wm.addKeybinding('midscreen', settings, flag, mode, () => {
-// 		const window = getActiveWindow();
-// 		const rects = getRectangles(window);
-// 		const fourthWidth = rects.workspace.w / 4;
-// 		const fourthHeight = rects.workspace.h / 4;
-// 		const xStart = rects.workspace.x + (rects.workspace.w - (rects.workspace.w - fourthWidth)) / 2;
-// 		const yStart = (rects.workspace.h - (rects.workspace.h - fourthHeight)) / 2;
-// 		const newWidth = rects.workspace.w - fourthWidth;
-// 		const newHeight = rects.workspace.h - fourthHeight;
-
-// 		window.unmaximize(Meta.MaximizeFlags.BOTH);
-// 		window.move_frame(false, xStart, yStart);
-// 		window.move_resize_frame(false, xStart, yStart, newWidth, newHeight);
-// 	});
-
-// 	Main.wm.addKeybinding('toggle-left', settings, flag, mode, () => {
-// 		const window = getActiveWindow();
-// 		const rects = getRectangles(window);
-// 		const newWidth = getResizeVal(rects.workspace.w, rects.window.w, WidthDelta);
-
-// 		window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-// 		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-// 		window.move_frame(false, rects.workspace.x, 0);
-// 		window.move_resize_frame(false, rects.workspace.x, 0, newWidth, rects.window.h);
-// 		window.maximize(Meta.MaximizeFlags.VERTICAL);
-// 	});
-
-// 	Main.wm.addKeybinding('toggle-right', settings, flag, mode, () => {
-// 		const window = getActiveWindow();
-// 		const rects = getRectangles(window);
-// 		const newWidth = getResizeVal(rects.workspace.w, rects.window.w, WidthDelta);
-// 		const xStart = rects.workspace.x + rects.workspace.w - newWidth;
-
-// 		window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-// 		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-// 		window.move_frame(false, xStart, 0);
-// 		window.move_resize_frame(false, xStart, 0, newWidth, rects.window.h);
-// 		window.maximize(Meta.MaximizeFlags.VERTICAL);
-// 	});
-
-// 	Main.wm.addKeybinding('toggle-top', settings, flag, mode, () => {
-// 		const window = getActiveWindow();
-// 		const rects = getRectangles(window);
-// 		const newHeight = getResizeVal(rects.workspace.h, rects.window.h, HeightDelta);
-
-// 		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-// 		window.move_frame(false, rects.window.x, 0);
-// 		window.move_resize_frame(false, rects.window.x, 0, rects.window.w, newHeight);
-// 	});
-
-// 	Main.wm.addKeybinding('toggle-bottom', settings, flag, mode, () => {
-// 		const window = getActiveWindow();
-// 		const rects = getRectangles(window);
-// 		const newHeight = getResizeVal(rects.workspace.h, rects.window.h, HeightDelta);
-// 		const yStart = rects.workspace.h - newHeight + 100;
-
-// 		window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-// 		window.move_frame(false, rects.window.x, yStart);
-// 		window.move_resize_frame(false, rects.window.x, yStart, rects.window.w, newHeight);
-// 	});
-// }
-
-// // eslint-disable-next-line no-unused-vars
-// function disable() {
-// 	Main.wm.removeKeybinding('midscreen');
-// 	Main.wm.removeKeybinding('toggle-left');
-// 	Main.wm.removeKeybinding('toggle-right');
-// 	Main.wm.removeKeybinding('toggle-top');
-// 	Main.wm.removeKeybinding('toggle-bottom');
-// }
+	#removeKeybinding(name: string) {
+		Main.wm.removeKeybinding(name);
+	}
+}
