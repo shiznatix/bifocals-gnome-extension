@@ -3,3 +3,6 @@ bifocals.zip
 dist
 .vscode
 eslint.config.js
+.vscode/
+/eslint.config.json
+/client/eslint.config.json
