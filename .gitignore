@@ -1,3 +1,5 @@
 node_modules
 bifocals.zip
 dist
+.vscode
+eslint.config.js
