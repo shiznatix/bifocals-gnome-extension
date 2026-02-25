@@ -4,6 +4,7 @@ dist
 .vscode
 eslint.config.js
 
-/eslint.config.json
-/client/eslint.config.json
+/eslint.config.js
+/client/eslint.config.js
+
 .vscode/
