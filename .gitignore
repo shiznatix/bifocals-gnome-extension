@@ -8,3 +8,5 @@ eslint.config.js
 /client/eslint.config.js
 
 .vscode/
+
+.rhpy
