@@ -14,7 +14,9 @@ const _cancelBtn = () => _('Cancel');
 function anyDiffersFromDefault(settings: Gio.Settings, keys: readonly string[]): boolean {
 	return keys.some((key) => {
 		const defaultValue = settings.get_default_value(key);
-		if (defaultValue === null) return false;
+		if (defaultValue === null) {
+			return false;
+		}
 		return !settings.get_value(key).equal(defaultValue);
 	});
 }

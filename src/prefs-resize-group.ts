@@ -24,7 +24,9 @@ export function addResizeGroup(
 	title: string,
 ) {
 	const isCustomized = (key: string) => {
-		if (settings.get_user_value(key) === null) return false;
+		if (settings.get_user_value(key) === null) {
+			return false;
+		}
 		const defaultVal = settings.get_default_value(key);
 		return defaultVal === null || settings.get_int(key) !== defaultVal.get_int32();
 	};

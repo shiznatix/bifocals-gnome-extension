@@ -1,0 +1,99 @@
+# Bifocals GNOME Shell Extension
+# Copyright (C) 2024
+# This file is distributed under the same license as the bifocals package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bifocals 3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-12 00:00+0000\n"
+"PO-Revision-Date: 2026-06-13 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Preferences window title
+msgid "Bifocal Preferences"
+msgstr "Preferenze di Bifocals"
+
+#. Keybindings group title
+msgid "Keybindings"
+msgstr "Scorciatoie da tastiera"
+
+#. Keybindings group description
+msgid "Configure the extension keybindings"
+msgstr "Configura le scorciatoie da tastiera dell'estensione"
+
+#. Left/right resize group title
+msgid "Left / Right Sizes (% of screen width)"
+msgstr "Dimensioni sinistra / destra (% larghezza schermo)"
+
+#. Top/bottom resize group title
+msgid "Top / Bottom Sizes (% of screen height)"
+msgstr "Dimensioni alto / basso (% altezza schermo)"
+
+#. Midscreen resize group title
+msgid "Midscreen Sizes (% of screen)"
+msgstr "Dimensioni centro schermo (% dello schermo)"
+
+#. Resize size labels
+msgid "Small"
+msgstr "Piccolo"
+
+msgid "Medium"
+msgstr "Medio"
+
+msgid "Large"
+msgstr "Grande"
+
+#. Tooltip for per-row reset button in resize groups
+msgid "Restore default"
+msgstr "Ripristina predefinito"
+
+#. Subtitle shown on a resize row when it will never be triggered due to ordering
+msgid "Value must be larger than previous size"
+msgstr "Il valore deve essere maggiore della dimensione precedente"
+
+#. Restore all defaults row title
+msgid "Restore All Defaults"
+msgstr "Ripristina tutti i valori predefiniti"
+
+#. Restore all defaults row subtitle
+msgid "Reset all preferences to their default values"
+msgstr "Reimposta tutte le preferenze ai valori predefiniti"
+
+#. Restore all defaults button label
+msgid "Restore All"
+msgstr "Ripristina tutto"
+
+#. Confirmation dialog heading for restore all
+msgid "Restore All Defaults?"
+msgstr "Ripristinare tutti i valori predefiniti?"
+
+#. Confirmation dialog body for restore all
+msgid "All preferences will be reset to their default values. This cannot be undone."
+msgstr "Tutte le preferenze verranno reimpostate ai valori predefiniti. Questa operazione non può essere annullata."
+
+#. Generic cancel button label
+msgid "Cancel"
+msgstr "Annulla"
+
+#. Tooltip for the reset button on each shortcut row
+msgid "Reset the shortcut to its default value"
+msgstr "Reimposta la scorciatoia al valore predefinito"
+
+#. Displayed when no shortcut is set
+msgid "<Unset>"
+msgstr "<Non impostato>"
+
+#. Shortcut rebind dialog heading
+msgid "Set shortcut"
+msgstr "Imposta scorciatoia"
+
+#. Shortcut rebind dialog body shown while awaiting key input
+msgid "awaiting input…"
+msgstr "in attesa di input…"

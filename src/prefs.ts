@@ -31,6 +31,7 @@ const _keybindingsDesc = () => _('Configure the extension keybindings');
 const _leftRightTitle = () => _('Left / Right Sizes (% of screen width)');
 const _topBottomTitle = () => _('Top / Bottom Sizes (% of screen height)');
 const _midscreenTitle = () => _('Midscreen Sizes (% of screen)');
+
 export default class BifocalsPrefs extends ExtensionPreferences {
 	async fillPreferencesWindow(window: Adw.PreferencesWindow) {
 		const settings = this.getSettings();

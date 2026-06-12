@@ -4,3 +4,6 @@ dist/
 locale/
 .vscode/
 gschemas.compiled
+.python-version
+.venv/
+uv.lock

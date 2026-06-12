@@ -84,11 +84,7 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('midscreen', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: Fractions = [
-				this.#settings!.get_int('resize-midscreen-small') / 100,
-				this.#settings!.get_int('resize-midscreen-medium') / 100,
-				this.#settings!.get_int('resize-midscreen-large') / 100,
-			];
+			const fractions = this.#getFractions('resize-midscreen');
 			const newWidth = resizable.getResizeVal('w', fractions);
 			const newHeight = resizable.getResizeVal('h', fractions);
 			const xStart = rectangles.workspace.x + Math.floor((rectangles.workspace.w - newWidth) / 2);
@@ -100,11 +96,7 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-left', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: Fractions = [
-				this.#settings!.get_int('resize-left-right-small') / 100,
-				this.#settings!.get_int('resize-left-right-medium') / 100,
-				this.#settings!.get_int('resize-left-right-large') / 100,
-			];
+			const fractions = this.#getFractions('resize-left-right');
 			const newWidth = resizable.getResizeVal('w', fractions);
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
@@ -113,11 +105,7 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-right', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: Fractions = [
-				this.#settings!.get_int('resize-left-right-small') / 100,
-				this.#settings!.get_int('resize-left-right-medium') / 100,
-				this.#settings!.get_int('resize-left-right-large') / 100,
-			];
+			const fractions = this.#getFractions('resize-left-right');
 			const newWidth = resizable.getResizeVal('w', fractions);
 			const xStart = rectangles.workspace.x + rectangles.workspace.w - newWidth;
 
@@ -127,11 +115,7 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-top', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: Fractions = [
-				this.#settings!.get_int('resize-top-bottom-small') / 100,
-				this.#settings!.get_int('resize-top-bottom-medium') / 100,
-				this.#settings!.get_int('resize-top-bottom-large') / 100,
-			];
+			const fractions = this.#getFractions('resize-top-bottom');
 			const newHeight = resizable.getResizeVal('h', fractions);
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
@@ -140,11 +124,7 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-bottom', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: Fractions = [
-				this.#settings!.get_int('resize-top-bottom-small') / 100,
-				this.#settings!.get_int('resize-top-bottom-medium') / 100,
-				this.#settings!.get_int('resize-top-bottom-large') / 100,
-			];
+			const fractions = this.#getFractions('resize-top-bottom');
 			const newHeight = resizable.getResizeVal('h', fractions);
 			const yStart = rectangles.workspace.y + rectangles.workspace.h - newHeight;
 
@@ -160,6 +140,14 @@ export default class BifocalsExtension extends Extension {
 		this.#removeKeybinding('toggle-top');
 		this.#removeKeybinding('toggle-bottom');
 		this.#settings = null;
+	}
+
+	#getFractions(key: string): Fractions {
+		return [
+			this.#settings!.get_int(`${key}-small`) / 100,
+			this.#settings!.get_int(`${key}-medium`) / 100,
+			this.#settings!.get_int(`${key}-large`) / 100,
+		];
 	}
 
 	#addKeybinding(name: string, handler: (resizable: Resizable) => void) {
