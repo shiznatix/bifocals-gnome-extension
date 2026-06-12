@@ -22,7 +22,7 @@ export default class BifocalsPrefs extends ExtensionPreferences {
 
 		const group = new Adw.PreferencesGroup({
 			title: 'Keybindings',
-			description: 'Configure the appearance of the extension',
+			description: 'Configure the extension keybindings',
 		});
 		page.add(group);
 

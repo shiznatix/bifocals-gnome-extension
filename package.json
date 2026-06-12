@@ -9,17 +9,21 @@
     "copy-files": "copyfiles schemas/** dist && copyfiles metadata.json dist && copyfiles LICENSE dist",
     "zip": "cd dist && zip -r bifocals.zip . && mv bifocals.zip ..",
     "build": "npm run clean && tsc && npm run compile-schemas && npm run copy-files && npm run zip",
-    "build:dev": "npm run build && tsc --watch"
+    "dev": "npm run link && bash scripts/dev.sh",
+    "dev:build": "npm run build && tsc --watch",
+    "dev:link": "bash scripts/link.sh",
+    "test:install-zip": "npm run build && bash scripts/install-zip.sh"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "copyfiles": "^2.4.1",
-    "eslint": "^9.12.0",
-    "eslint-plugin-jsdoc": "^50.3.1",
-    "typescript": "^5.6.2"
+    "copyfiles": "2.4.1",
+    "eslint": "9.39.4",
+    "eslint-plugin-jsdoc": "50.8.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.61.0"
   },
   "dependencies": {
-    "@girs/gnome-shell": "^47.0.0-next.4"
+    "@girs/gnome-shell": "46.0.2"
   }
 }

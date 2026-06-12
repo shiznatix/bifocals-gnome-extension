@@ -21,11 +21,11 @@ class Resizable {
 	rectangles: Rectangles;
 
 	constructor() {
-		const window = global.workspace_manager
+		const window = Shell.Global.get().workspace_manager
 			.get_active_workspace()
 			.list_windows()
-			.find(window => window.has_focus());
-		
+			.find((window: Meta.Window) => window.has_focus());
+
 		if (!window) {
 			throw new Error('Cannot find active window');
 		}
@@ -56,9 +56,9 @@ class Resizable {
 	getResizeVal(dimensionKey: keyof RectangleDimensions) {
 		const workspaceAxis = this.rectangles.workspace[dimensionKey];
 		const windowAxis = this.rectangles.window[dimensionKey];
-		const size1 = workspaceAxis / 3;
-		const size2 = workspaceAxis / 2;
-		const size3 = size1 * 2;
+		const size1 = Math.floor(workspaceAxis / 3);
+		const size2 = Math.floor(workspaceAxis / 2);
+		const size3 = Math.floor(workspaceAxis * 2 / 3);
 
 		if (windowAxis < size1) {
 			return size1;
@@ -101,11 +101,8 @@ export default class BifocalsExtension extends Extension {
 			const { rectangles, window } = resizable;
 			const newWidth = resizable.getResizeVal('w');
 
-			window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-			// window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-			window.move_frame(false, rectangles.workspace.x, 0);
-			window.move_resize_frame(false, rectangles.workspace.x, 0, newWidth, rectangles.window.h);
-			window.maximize(Meta.MaximizeFlags.VERTICAL);
+			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			window.move_resize_frame(false, rectangles.workspace.x, rectangles.workspace.y, newWidth, rectangles.workspace.h);
 		});
 
 		this.#addKeybinding('toggle-right', (resizable) => {
@@ -113,29 +110,24 @@ export default class BifocalsExtension extends Extension {
 			const newWidth = resizable.getResizeVal('w');
 			const xStart = rectangles.workspace.x + rectangles.workspace.w - newWidth;
 
-			window.unmaximize(Meta.MaximizeFlags.HORIZONTAL);
-			// window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-			window.move_frame(false, xStart, 0);
-			window.move_resize_frame(false, xStart, 0, newWidth, rectangles.window.h);
-			window.maximize(Meta.MaximizeFlags.VERTICAL);
+			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			window.move_resize_frame(false, xStart, rectangles.workspace.y, newWidth, rectangles.workspace.h);
 		});
 
 		this.#addKeybinding('toggle-top', (resizable) => {
 			const { rectangles, window } = resizable;
 			const newHeight = resizable.getResizeVal('h');
 
-			window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-			window.move_frame(false, rectangles.window.x, 0);
-			window.move_resize_frame(false, rectangles.window.x, 0, rectangles.window.w, newHeight);
+			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			window.move_resize_frame(false, rectangles.window.x, rectangles.workspace.y, rectangles.window.w, newHeight);
 		});
 
 		this.#addKeybinding('toggle-bottom', (resizable) => {
 			const { rectangles, window } = resizable;
 			const newHeight = resizable.getResizeVal('h');
-			const yStart = rectangles.workspace.h - newHeight + 100;
+			const yStart = rectangles.workspace.y + rectangles.workspace.h - newHeight;
 
-			window.unmaximize(Meta.MaximizeFlags.VERTICAL);
-			window.move_frame(false, rectangles.window.x, yStart);
+			window.unmaximize(Meta.MaximizeFlags.BOTH);
 			window.move_resize_frame(false, rectangles.window.x, yStart, rectangles.window.w, newHeight);
 		});
 	}

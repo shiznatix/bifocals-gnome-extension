@@ -1,12 +1,4 @@
 node_modules
 bifocals.zip
-dist
-.vscode
-eslint.config.js
-
-/eslint.config.js
-/client/eslint.config.js
-
+dist/
 .vscode/
-
-.rhpy
