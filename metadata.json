@@ -1,7 +1,7 @@
 {
   "uuid": "bifocals@shiznatix",
   "name": "Bifocals",
-  "description": "Gnome extension adding more window management keyboard shortcuts.\n\n* Left / right 'view split' anchoring cycles through 3 sizes: 1/3, 1/2, and 2/3 of the current screen width.\n* Top / bottom 'view split' anchoring cycles through 3 sizes: 1/3, 1/2, and 2/3 of the current screen height.\n*Adds 'mid screen' of centering the window with 3/4 screen height and width.",
+  "description": "Gnome extension adding more window management keyboard shortcuts.\n\n* Left / right cycles 'view split' anchoring through 3 configurable sizes\n* Top / bottom cycles 'view split' anchoring cycles through 3 configurable sizes\n* Adds 'mid screen' anchoring for centering the window through 3 configurable sizes\n\nAll shortcuts and sizes configurable and optional",
   "shell-version": [
     "46",
     "47",
