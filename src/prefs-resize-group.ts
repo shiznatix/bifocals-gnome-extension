@@ -1,6 +1,7 @@
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
+import GObject from 'gi://GObject';
 import { gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 const ICON_RESET = 'edit-clear-symbolic';
@@ -17,88 +18,203 @@ const getSizes = () => [
 	{ suffix: 'large', label: _large() },
 ];
 
-export function addResizeGroup(
-	page: Adw.PreferencesPage,
-	settings: Gio.Settings,
-	keyPrefix: string,
-	title: string,
-) {
-	const isCustomized = (key: string) => {
-		if (settings.get_user_value(key) === null) {
+interface ResizeGroupParams extends Partial<Adw.PreferencesGroup.ConstructorProps> {
+	settings: Gio.Settings;
+	keyPrefix: string;
+}
+
+interface ResizeRowParams extends Partial<Adw.ActionRow.ConstructorProps> {
+	settings: Gio.Settings;
+	key: string;
+	enabledKey: string;
+}
+
+const ResizeRow = GObject.registerClass({
+	GTypeName: 'BifocalsResizeActionRow',
+}, class extends Adw.ActionRow {
+
+	#key: string;
+	#enabledKey: string;
+	#settings: Gio.Settings;
+	#spinButton!: Gtk.SpinButton;
+	#adjustment!: Gtk.Adjustment;
+	#percentLabel!: Gtk.Label;
+	#resetBtn!: Gtk.Button;
+	#toggle!: Gtk.Switch;
+
+	constructor({ settings, key, enabledKey, ...config }: ResizeRowParams) {
+		super(config);
+
+		this.#key = key;
+		this.#settings = settings;
+		this.#enabledKey = enabledKey;
+
+		this.#createAdjustment();
+		this.#createSpinButton();
+		this.#createPercentLabel();
+		this.#createResetBtn();
+		this.#createToggle();
+
+		this.activatable_widget = this.#toggle;
+
+		this.#settings.connect(`changed::${this.#key}`, () => {
+			const customized = this.#isCustomized();
+			this.#resetBtn.opacity = customized ? 1 : 0;
+			this.#resetBtn.sensitive = customized && this.#settings.get_boolean(this.#enabledKey);
+			if (this.#adjustment.value !== this.#settings.get_int(this.#key)) {
+				this.#adjustment.value = this.#settings.get_int(this.#key);
+			}
+		});
+
+		this.#settings.connect(`changed::${this.#enabledKey}`, () => {
+			if (this.#toggle.active !== this.#settings.get_boolean(this.#enabledKey)) {
+				this.#toggle.active = this.#settings.get_boolean(this.#enabledKey);
+			}
+			this.#updateSensitivity();
+		});
+
+		this.add_suffix(this.#spinButton);
+		this.add_suffix(this.#percentLabel);
+		this.add_suffix(this.#resetBtn);
+		this.add_suffix(this.#toggle);
+
+		this.#updateSensitivity();
+	}
+
+	#isCustomized() {
+		if (this.#settings.get_user_value(this.#key) === null) {
 			return false;
 		}
-		const defaultVal = settings.get_default_value(key);
-		return defaultVal === null || settings.get_int(key) !== defaultVal.get_int32();
-	};
-	const group = new Adw.PreferencesGroup({ title });
-	const rows: Adw.SpinRow[] = [];
+		const defaultVal = this.#settings.get_default_value(this.#key);
+		return defaultVal === null || this.#settings.get_int(this.#key) !== defaultVal.get_int32();
+	}
 
-	for (const { suffix, label } of getSizes()) {
-		const key = `${keyPrefix}-${suffix}`;
-		const row = new Adw.SpinRow({
-			title: label,
-			digits: 0,
-			adjustment: new Gtk.Adjustment({
-				lower: 5,
-				upper: 95,
-				step_increment: 1,
-				page_increment: 5,
-				value: settings.get_int(key),
-			}),
+	#updateSensitivity() {
+		const enabled = this.#settings.get_boolean(this.#enabledKey);
+		this.#spinButton.sensitive = enabled;
+		this.#percentLabel.sensitive = enabled;
+		this.#resetBtn.sensitive = enabled && this.#isCustomized();
+	}
+
+	#createAdjustment() {
+		this.#adjustment = new Gtk.Adjustment({
+			lower: 5,
+			upper: 100,
+			step_increment: 1,
+			page_increment: 5,
+			value: this.#settings.get_int(this.#key),
 		});
-		const percentLabel = new Gtk.Label({ label: '%' });
+	}
 
-		const resetBtn = new Gtk.Button({
+	#createSpinButton() {
+		this.#spinButton = new Gtk.SpinButton({
+			adjustment: this.#adjustment,
+			digits: 0,
 			valign: Gtk.Align.CENTER,
-			opacity: isCustomized(key) ? 1 : 0,
-			sensitive: isCustomized(key),
+			width_chars: 3,
+		});
+		this.#spinButton.connect('value-changed', () => {
+			const intVal = this.#spinButton.get_value_as_int();
+			if (this.#settings.get_int(this.#key) !== intVal) {
+				this.#settings.set_int(this.#key, intVal);
+			}
+		});
+	}
+
+	get value() {
+		return this.#spinButton.get_value_as_int();
+	}
+
+	onValueChanged(callback: () => void) {
+		this.#spinButton.connect('value-changed', callback);
+	}
+
+	#createPercentLabel() {
+		this.#percentLabel = new Gtk.Label({ label: '%', valign: Gtk.Align.CENTER });
+	}
+
+	#createResetBtn() {
+		this.#resetBtn = new Gtk.Button({
+			valign: Gtk.Align.CENTER,
+			opacity: this.#isCustomized() ? 1 : 0,
 			icon_name: ICON_RESET,
 			tooltip_text: _restoreDefault(),
 			css_classes: ['flat', 'circular'],
 		});
+		this.#resetBtn.connect('clicked', () => this.#settings.reset(this.#key));
+	}
 
-		resetBtn.connect('clicked', () => settings.reset(key));
-		settings.connect(`changed::${key}`, () => {
-			const customized = isCustomized(key);
-			resetBtn.opacity = customized ? 1 : 0;
-			resetBtn.sensitive = customized;
+	#createToggle() {
+		this.#toggle = new Gtk.Switch({
+			valign: Gtk.Align.CENTER,
+			active: this.#settings.get_boolean(this.#enabledKey),
 		});
+		this.#toggle.connect('notify::active', () => {
+			this.#settings.set_boolean(this.#enabledKey, this.#toggle.active);
+		});
+	}
+});
 
-		row.add_suffix(percentLabel);
-		row.add_suffix(resetBtn);
-		settings.bind(key, row, 'value', Gio.SettingsBindFlags.DEFAULT);
-		group.add(row);
-		rows.push(row);
+export const ResizeGroup = GObject.registerClass({
+	GTypeName: 'BifocalsResizeGroup',
+}, class extends Adw.PreferencesGroup {
+
+	#settings: Gio.Settings;
+	#keyPrefix: string;
+	#smallRow!: InstanceType<typeof ResizeRow>;
+	#mediumRow!: InstanceType<typeof ResizeRow>;
+	#largeRow!: InstanceType<typeof ResizeRow>;
+
+	constructor({ settings, keyPrefix, ...config }: ResizeGroupParams) {
+		super(config);
+
+		this.#settings = settings;
+		this.#keyPrefix = keyPrefix;
+
+		const rowData: Array<{ row: InstanceType<typeof ResizeRow>; suffix: string }> = [];
+
+		for (const { suffix, label } of getSizes()) {
+			const key = `${keyPrefix}-${suffix}`;
+			const enabledKey = `${keyPrefix}-${suffix}-enabled`;
+
+			const row = new ResizeRow({ settings, key, enabledKey, title: label });
+			this.add(row);
+			rowData.push({ row, suffix });
+		}
+
+		[{ row: this.#smallRow }, { row: this.#mediumRow }, { row: this.#largeRow }] = rowData;
+
+		for (const { row, suffix } of rowData) {
+			row.onValueChanged(() => this.#validate());
+			settings.connect(`changed::${keyPrefix}-${suffix}-enabled`, () => this.#validate());
+		}
+		this.#validate();
 	}
 
-	const [smallRow, mediumRow, largeRow] = rows;
+	#validate() {
+		const smallVal = this.#smallRow.value;
+		const mediumVal = this.#mediumRow.value;
+		const largeVal = this.#largeRow.value;
 
-	const validate = () => {
-		const smallVal = smallRow.value;
-		const mediumVal = mediumRow.value;
-		const largeVal = largeRow.value;
+		const smallEnabled = this.#settings.get_boolean(`${this.#keyPrefix}-small-enabled`);
+		const mediumEnabled = this.#settings.get_boolean(`${this.#keyPrefix}-medium-enabled`);
+		const largeEnabled = this.#settings.get_boolean(`${this.#keyPrefix}-large-enabled`);
 
-		const mediumError = mediumVal <= smallVal;
-		mediumRow.subtitle = mediumError ? _neverTriggered() : '';
+		const mediumError = smallEnabled && mediumEnabled && mediumVal <= smallVal;
+		this.#mediumRow.subtitle = mediumError ? _neverTriggered() : '';
 		if (mediumError) {
-			mediumRow.add_css_class('error');
+			this.#mediumRow.add_css_class('error');
 		} else {
-			mediumRow.remove_css_class('error');
+			this.#mediumRow.remove_css_class('error');
 		}
 
-		const largeError = largeVal <= mediumVal;
-		largeRow.subtitle = largeError ? _neverTriggered() : '';
+		const prevForLarge = mediumEnabled ? mediumVal : (smallEnabled ? smallVal : null);
+		const largeError = largeEnabled && prevForLarge !== null && largeVal <= prevForLarge;
+		this.#largeRow.subtitle = largeError ? _neverTriggered() : '';
 		if (largeError) {
-			largeRow.add_css_class('error');
+			this.#largeRow.add_css_class('error');
 		} else {
-			largeRow.remove_css_class('error');
+			this.#largeRow.remove_css_class('error');
 		}
-	};
-
-	for (const row of rows) {
-		row.connect('notify::value', validate);
 	}
-	validate();
-
-	page.add(group);
-}
+});

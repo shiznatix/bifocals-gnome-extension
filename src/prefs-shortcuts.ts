@@ -29,6 +29,25 @@ const _helpEsc = () => _('Press <b>ESC</b> to close the dialog.');
 const _helpBackspace = () => _('Press <b>BackSpace</b> to unset the keybinding.');
 const _help = () => [_helpNote(), '', _helpEsc(), _helpBackspace()].join('\n');
 
+interface ShortcutsGroupParams extends Partial<Adw.PreferencesGroup.ConstructorProps> {
+	settings: Gio.Settings;
+	schemaKeys: readonly string[];
+	window: Gtk.Window;
+}
+
+export const ShortcutsGroup = GObject.registerClass({
+	GTypeName: 'BifocalsShortcutsGroup',
+}, class extends Adw.PreferencesGroup {
+
+	constructor({ settings, schemaKeys, window, ...config }: ShortcutsGroupParams) {
+		super(config);
+
+		for (const schemaKey of schemaKeys) {
+			this.add(new ShortcutRow({ settings, schemaKey, window }));
+		}
+	}
+});
+
 export const ShortcutRow = GObject.registerClass({
 	GTypeName: 'BifocalsShortcutActionRow',
 }, class extends Adw.ActionRow {
@@ -153,7 +172,7 @@ export const ShortcutRow = GObject.registerClass({
 		eventController.connect('key-pressed', (ctrl, _, code, state) => {
 			const event = ctrl.get_current_event() as Gdk.KeyEvent;
 			const display = event.get_display()!;
-			const { keyval, modifier } = this.#normalizeKeyvalAndMask(display, code, state, ctrl.get_group());
+			const { keyval, modifier } = this.#normalizeKeyValAndMask(display, code, state, ctrl.get_group());
 
 			if (event.is_modifier()) {
 				return Gdk.EVENT_STOP;
@@ -202,7 +221,7 @@ export const ShortcutRow = GObject.registerClass({
 	}
 
 	// https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/a936ac6bc9d5a01dd2c3fcb905189570ecd72753/panels/keyboard/keyboard-shortcuts.c#L388
-	#normalizeKeyvalAndMask(
+	#normalizeKeyValAndMask(
 		display: Gdk.Display,
 		code: number,
 		mask: Gdk.ModifierType,

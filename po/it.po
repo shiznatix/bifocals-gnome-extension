@@ -29,16 +29,28 @@ msgid "Configure the extension keybindings"
 msgstr "Configura le scorciatoie da tastiera dell'estensione"
 
 #. Left/right resize group title
-msgid "Left / Right Sizes (% of screen width)"
-msgstr "Dimensioni sinistra / destra (% larghezza schermo)"
+msgid "Left / Right Sizes"
+msgstr "Dimensioni sinistra / destra"
+
+#. Left/right resize group description
+msgid "(% of screen width)"
+msgstr "(% larghezza schermo)"
 
 #. Top/bottom resize group title
-msgid "Top / Bottom Sizes (% of screen height)"
-msgstr "Dimensioni alto / basso (% altezza schermo)"
+msgid "Top / Bottom Sizes"
+msgstr "Dimensioni alto / basso"
+
+#. Top/bottom resize group description
+msgid "(% of screen height)"
+msgstr "(% altezza schermo)"
 
 #. Midscreen resize group title
-msgid "Midscreen Sizes (% of screen)"
-msgstr "Dimensioni centro schermo (% dello schermo)"
+msgid "Midscreen Sizes"
+msgstr "Dimensioni centro schermo"
+
+#. Midscreen resize group description
+msgid "(% of screen)"
+msgstr "(% dello schermo)"
 
 #. Resize size labels
 msgid "Small"
@@ -97,3 +109,21 @@ msgstr "Imposta scorciatoia"
 #. Shortcut rebind dialog body shown while awaiting key input
 msgid "awaiting input…"
 msgstr "in attesa di input…"
+
+#. Shortcut rebind dialog button: add a new shortcut alongside existing ones
+msgid "Add shortcut"
+msgstr "Aggiungi scorciatoia"
+
+#. Shortcut rebind dialog button: replace all existing shortcuts
+msgid "Replace shortcut(s)"
+msgstr "Sostituisci scorciatoia(e)"
+
+#. Shortcut rebind dialog help text
+msgid "Note: This dialog only detects shortcuts that are not actively intercepted by Gnome shell, e.g., natively or through another extension."
+msgstr "Nota: questa finestra di dialogo rileva solo le scorciatoie che non sono attivamente intercettate dalla shell di Gnome, ad es. in modo nativo o tramite un'altra estensione."
+
+msgid "Press <b>ESC</b> to close the dialog."
+msgstr "Premere <b>ESC</b> per chiudere la finestra di dialogo."
+
+msgid "Press <b>BackSpace</b> to unset the keybinding."
+msgstr "Premere <b>BackSpace</b> per rimuovere la scorciatoia da tastiera."

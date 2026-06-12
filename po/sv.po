@@ -29,16 +29,28 @@ msgid "Configure the extension keybindings"
 msgstr "Konfigurera tilläggets tangentbordsgenväggar"
 
 #. Left/right resize group title
-msgid "Left / Right Sizes (% of screen width)"
-msgstr "Vänster / höger storlekar (% av skärmbredd)"
+msgid "Left / Right Sizes"
+msgstr "Vänster / höger storlekar"
+
+#. Left/right resize group description
+msgid "(% of screen width)"
+msgstr "(% av skärmbredd)"
 
 #. Top/bottom resize group title
-msgid "Top / Bottom Sizes (% of screen height)"
-msgstr "Övre / nedre storlekar (% av skärmhöjd)"
+msgid "Top / Bottom Sizes"
+msgstr "Övre / nedre storlekar"
+
+#. Top/bottom resize group description
+msgid "(% of screen height)"
+msgstr "(% av skärmhöjd)"
 
 #. Midscreen resize group title
-msgid "Midscreen Sizes (% of screen)"
-msgstr "Mitten av skärm storlekar (% av skärm)"
+msgid "Midscreen Sizes"
+msgstr "Mitten av skärm storlekar"
+
+#. Midscreen resize group description
+msgid "(% of screen)"
+msgstr "(% av skärm)"
 
 #. Resize size labels
 msgid "Small"
@@ -97,3 +109,21 @@ msgstr "Ange genväg"
 #. Shortcut rebind dialog body shown while awaiting key input
 msgid "awaiting input…"
 msgstr "väntar på inmatning…"
+
+#. Shortcut rebind dialog button: add a new shortcut alongside existing ones
+msgid "Add shortcut"
+msgstr "Lägg till genväg"
+
+#. Shortcut rebind dialog button: replace all existing shortcuts
+msgid "Replace shortcut(s)"
+msgstr "Ersätt genväg(ar)"
+
+#. Shortcut rebind dialog help text
+msgid "Note: This dialog only detects shortcuts that are not actively intercepted by Gnome shell, e.g., natively or through another extension."
+msgstr "Obs: Den här dialogrutan identifierar bara genvägar som inte aktivt avlyssnas av Gnome-skalet, t.ex. nativt eller via ett annat tillägg."
+
+msgid "Press <b>ESC</b> to close the dialog."
+msgstr "Tryck <b>ESC</b> för att stänga dialogen."
+
+msgid "Press <b>BackSpace</b> to unset the keybinding."
+msgstr "Tryck <b>BackSpace</b> för att ta bort tangentbindningen."

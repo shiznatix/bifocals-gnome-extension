@@ -29,16 +29,28 @@ msgid "Configure the extension keybindings"
 msgstr "Configure the extension keybindings"
 
 #. Left/right resize group title
-msgid "Left / Right Sizes (% of screen width)"
-msgstr "Left / Right Sizes (% of screen width)"
+msgid "Left / Right Sizes"
+msgstr "Left / Right Sizes"
+
+#. Left/right resize group description
+msgid "(% of screen width)"
+msgstr "(% of screen width)"
 
 #. Top/bottom resize group title
-msgid "Top / Bottom Sizes (% of screen height)"
-msgstr "Top / Bottom Sizes (% of screen height)"
+msgid "Top / Bottom Sizes"
+msgstr "Top / Bottom Sizes"
+
+#. Top/bottom resize group description
+msgid "(% of screen height)"
+msgstr "(% of screen height)"
 
 #. Midscreen resize group title
-msgid "Midscreen Sizes (% of screen)"
-msgstr "Midscreen Sizes (% of screen)"
+msgid "Midscreen Sizes"
+msgstr "Midscreen Sizes"
+
+#. Midscreen resize group description
+msgid "(% of screen)"
+msgstr "(% of screen)"
 
 #. Resize size labels
 msgid "Small"
