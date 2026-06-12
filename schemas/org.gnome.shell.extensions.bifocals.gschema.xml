@@ -28,6 +28,45 @@
       <summary>Toggle bottom anchoring</summary>
     </key>
 
+    <key type="d" name="resize-left-right-small">
+      <default>0.3333</default>
+      <summary>Left / right small size</summary>
+    </key>
+    <key type="d" name="resize-left-right-medium">
+      <default>0.5</default>
+      <summary>Left / right medium size</summary>
+    </key>
+    <key type="d" name="resize-left-right-large">
+      <default>0.6667</default>
+      <summary>Left / right large size</summary>
+    </key>
+
+    <key type="d" name="resize-top-bottom-small">
+      <default>0.3333</default>
+      <summary>Top / bottom small size</summary>
+    </key>
+    <key type="d" name="resize-top-bottom-medium">
+      <default>0.5</default>
+      <summary>Top / bottom medium size</summary>
+    </key>
+    <key type="d" name="resize-top-bottom-large">
+      <default>0.6667</default>
+      <summary>Top / bottom large size</summary>
+    </key>
+
+    <key type="d" name="resize-midscreen-small">
+      <default>0.2</default>
+      <summary>Midscreen small size</summary>
+    </key>
+    <key type="d" name="resize-midscreen-medium">
+      <default>0.25</default>
+      <summary>Midscreen medium size</summary>
+    </key>
+    <key type="d" name="resize-midscreen-large">
+      <default>0.3333</default>
+      <summary>Midscreen large size</summary>
+    </key>
+
   </schema>
 
 </schemalist>

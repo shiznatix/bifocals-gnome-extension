@@ -5,6 +5,7 @@ import Gdk from 'gi://Gdk';
 import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
+import { gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 interface ShortcutParams extends Partial<Adw.ActionRow.ConstructorProps> {
 	settings: Gio.Settings;
@@ -17,12 +18,16 @@ interface KeyPressEvent {
 	modifier: Gdk.ModifierType;
 }
 
-const HELP_TEXT = [
-	'Note: This dialog only detects shortcuts that are not actively intercepted by Gnome shell, e.g., natively or through another extension.',
-	'',
-	'Press <b>ESC</b> to close the dialog.',
-	'Press <b>BackSpace</b> to unset the keybinding.',
-].join('\n');
+const _unset = () => _('<Unset>');
+const _resetTooltip = () => _('Reset the shortcut to its default value');
+const _setShortcutHeading = () => _('Set shortcut');
+const _awaitInput = () => _('await input…');
+const _addShortcut = () => _('Add shortcut');
+const _replaceShortcuts = () => _('Replace shortcut(s)');
+const _helpNote = () => _('Note: This dialog only detects shortcuts that are not actively intercepted by Gnome shell, e.g., natively or through another extension.');
+const _helpEsc = () => _('Press <b>ESC</b> to close the dialog.');
+const _helpBackspace = () => _('Press <b>BackSpace</b> to unset the keybinding.');
+const _help = () => [_helpNote(), '', _helpEsc(), _helpBackspace()].join('\n');
 
 export const ShortcutRow = GObject.registerClass({
 	GTypeName: 'BifocalsShortcutActionRow',
@@ -52,8 +57,8 @@ export const ShortcutRow = GObject.registerClass({
 		const resetBtn = new Gtk.Button({
 			valign: Gtk.Align.CENTER,
 			visible: this.#isCustomized(),
-            icon_name: 'edit-clear-symbolic',
-			tooltip_text: 'Reset the shortcut to its default value',
+			icon_name: 'edit-clear-symbolic',
+			tooltip_text: _resetTooltip(),
 			css_classes: ['flat', 'circular'],
 		});
 
@@ -73,17 +78,14 @@ export const ShortcutRow = GObject.registerClass({
 	}
 
 	#escape(s: string) {
-		return s.replace(/(<|>)/g, (c) => ({
-			'<': '&lt;',
-			'>': '&gt;',
-		}[c]!));
+		return s.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
 
 	#label() {
 		const current = this.#settings.get_strv(this.#schemaKey);
 		const shortcuts = current.length > 0
 			? this.#escape(current.join(', '))
-			: this.#escape('<Unset>');
+			: this.#escape(_unset());
 
 		return this.#isCustomized() ? `<b>${shortcuts}</b>` : shortcuts;
 	}
@@ -111,17 +113,18 @@ export const ShortcutRow = GObject.registerClass({
 		});
 
 		const dialog = new Adw.AlertDialog({
-			heading: 'Set shortcut',
-			body: `await input…\n\n${HELP_TEXT}`,
+			heading: _setShortcutHeading(),
+			body: `${_awaitInput()}\n\n${_help()}`,
+
 			body_use_markup: true,
 		});
 		dialog.add_controller(eventController);
 
-		dialog.add_response('add', 'Add shortcut');
+		dialog.add_response('add', _addShortcut());
 		dialog.set_response_appearance('add', Adw.ResponseAppearance.SUGGESTED);
 		dialog.set_response_enabled('add', false);
 
-		dialog.add_response('replace', 'Replace shortcut(s)');
+		dialog.add_response('replace', _replaceShortcuts());
 		dialog.set_response_appearance('replace', Adw.ResponseAppearance.DESTRUCTIVE);
 		dialog.set_response_enabled('replace', false);
 
@@ -130,10 +133,10 @@ export const ShortcutRow = GObject.registerClass({
 				this.#unsetKeybinding();
 			} else if (acceleratorName) {
 				if (response === 'add') {
-                    this.#addKeybinding(acceleratorName);
-                } else if (response === 'replace') {
-                    this.#replaceKeybinding(acceleratorName);
-                }
+					this.#addKeybinding(acceleratorName);
+				} else if (response === 'replace') {
+					this.#replaceKeybinding(acceleratorName);
+				}
 			}
 
 			dialog.close();
@@ -163,24 +166,24 @@ export const ShortcutRow = GObject.registerClass({
 						// To differentiate between the two cases, it is checked whether
 						// another shortcut had already been provided.
 						if (acceleratorName === undefined) {
-                            acceleratorName = Gtk.accelerator_name(keyval, modifier);
-                            break;
+							acceleratorName = Gtk.accelerator_name(keyval, modifier);
+							break;
 						} else if (acceleratorName === null) {
-                            this.#unsetKeybinding();
-                            dialog.close();
+							this.#unsetKeybinding();
+							dialog.close();
 						} else {
-                            this.#replaceKeybinding(acceleratorName);
-                            dialog.close();
+							this.#replaceKeybinding(acceleratorName);
+							dialog.close();
 						}
 						return Gdk.EVENT_STOP;
 					}
 				// intentionally fallthrough
 				default:
-				  acceleratorName = Gtk.accelerator_name(keyval, modifier)!;
+					acceleratorName = Gtk.accelerator_name(keyval, modifier)!
 			}
 
-			const name = acceleratorName ?? '<Unset>';
-			dialog.body = `${this.#escape(name)}\n\n${HELP_TEXT}`;
+			const name = acceleratorName ?? _unset();
+			dialog.body = `${this.#escape(name)}\n\n${_help()}`;
 			dialog.set_response_enabled('replace', true);
 			dialog.set_response_enabled('add', acceleratorName !== null);
 
@@ -240,8 +243,8 @@ export const ShortcutRow = GObject.registerClass({
 		}
 
 		return {
-            keyval: unmodifiedKeyval,
-            modifier: usedModifiers,
-        };
+			keyval: unmodifiedKeyval,
+			modifier: usedModifiers,
+		};
 	}
 });

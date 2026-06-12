@@ -53,24 +53,22 @@ class Resizable {
 		};
 	}
 
-	getResizeVal(dimensionKey: keyof RectangleDimensions) {
+	getResizeVal(dimensionKey: keyof RectangleDimensions, fractions: [number, number, number]) {
 		const workspaceAxis = this.rectangles.workspace[dimensionKey];
 		const windowAxis = this.rectangles.window[dimensionKey];
-		const size1 = Math.floor(workspaceAxis / 3);
-		const size2 = Math.floor(workspaceAxis / 2);
-		const size3 = Math.floor(workspaceAxis * 2 / 3);
+		const [s1, s2, s3] = fractions.map(f => Math.floor(workspaceAxis * f)) as [number, number, number];
 
-		if (windowAxis < size1) {
-			return size1;
+		if (windowAxis < s1) {
+			return s1;
 		}
-		if (windowAxis < size2) {
-			return size2;
+		if (windowAxis < s2) {
+			return s2;
 		}
-		if (windowAxis < size3) {
-			return size3;
+		if (windowAxis < s3) {
+			return s3;
 		}
 
-		return size1;
+		return s1;
 	}
 }
 
@@ -85,21 +83,28 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('midscreen', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fourthWidth = rectangles.workspace.w / 4;
-			const fourthHeight = rectangles.workspace.h / 4;
-			const xStart = rectangles.workspace.x + (rectangles.workspace.w - (rectangles.workspace.w - fourthWidth)) / 2;
-			const yStart = (rectangles.workspace.h - (rectangles.workspace.h - fourthHeight)) / 2;
-			const newWidth = rectangles.workspace.w - fourthWidth;
-			const newHeight = rectangles.workspace.h - fourthHeight;
+			const fractions: [number, number, number] = [
+				this.#settings!.get_double('resize-midscreen-small'),
+				this.#settings!.get_double('resize-midscreen-medium'),
+				this.#settings!.get_double('resize-midscreen-large'),
+			];
+			const newWidth = resizable.getResizeVal('w', fractions);
+			const newHeight = resizable.getResizeVal('h', fractions);
+			const xStart = rectangles.workspace.x + Math.floor((rectangles.workspace.w - newWidth) / 2);
+			const yStart = rectangles.workspace.y + Math.floor((rectangles.workspace.h - newHeight) / 2);
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
-			window.move_frame(false, xStart, yStart);
 			window.move_resize_frame(false, xStart, yStart, newWidth, newHeight);
 		});
 
 		this.#addKeybinding('toggle-left', (resizable) => {
 			const { rectangles, window } = resizable;
-			const newWidth = resizable.getResizeVal('w');
+			const fractions: [number, number, number] = [
+				this.#settings!.get_double('resize-left-right-small'),
+				this.#settings!.get_double('resize-left-right-medium'),
+				this.#settings!.get_double('resize-left-right-large'),
+			];
+			const newWidth = resizable.getResizeVal('w', fractions);
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
 			window.move_resize_frame(false, rectangles.workspace.x, rectangles.workspace.y, newWidth, rectangles.workspace.h);
@@ -107,7 +112,12 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-right', (resizable) => {
 			const { rectangles, window } = resizable;
-			const newWidth = resizable.getResizeVal('w');
+			const fractions: [number, number, number] = [
+				this.#settings!.get_double('resize-left-right-small'),
+				this.#settings!.get_double('resize-left-right-medium'),
+				this.#settings!.get_double('resize-left-right-large'),
+			];
+			const newWidth = resizable.getResizeVal('w', fractions);
 			const xStart = rectangles.workspace.x + rectangles.workspace.w - newWidth;
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
@@ -116,7 +126,12 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-top', (resizable) => {
 			const { rectangles, window } = resizable;
-			const newHeight = resizable.getResizeVal('h');
+			const fractions: [number, number, number] = [
+				this.#settings!.get_double('resize-top-bottom-small'),
+				this.#settings!.get_double('resize-top-bottom-medium'),
+				this.#settings!.get_double('resize-top-bottom-large'),
+			];
+			const newHeight = resizable.getResizeVal('h', fractions);
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
 			window.move_resize_frame(false, rectangles.window.x, rectangles.workspace.y, rectangles.window.w, newHeight);
@@ -124,7 +139,12 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-bottom', (resizable) => {
 			const { rectangles, window } = resizable;
-			const newHeight = resizable.getResizeVal('h');
+			const fractions: [number, number, number] = [
+				this.#settings!.get_double('resize-top-bottom-small'),
+				this.#settings!.get_double('resize-top-bottom-medium'),
+				this.#settings!.get_double('resize-top-bottom-large'),
+			];
+			const newHeight = resizable.getResizeVal('h', fractions);
 			const yStart = rectangles.workspace.y + rectangles.workspace.h - newHeight;
 
 			window.unmaximize(Meta.MaximizeFlags.BOTH);
