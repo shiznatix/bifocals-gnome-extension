@@ -29,16 +29,16 @@ msgid "Configure the extension keybindings"
 msgstr "Configure the extension keybindings"
 
 #. Left/right resize group title
-msgid "Left / Right Sizes"
-msgstr "Left / Right Sizes"
+msgid "Left / Right Sizes (% of screen width)"
+msgstr "Left / Right Sizes (% of screen width)"
 
 #. Top/bottom resize group title
-msgid "Top / Bottom Sizes"
-msgstr "Top / Bottom Sizes"
+msgid "Top / Bottom Sizes (% of screen height)"
+msgstr "Top / Bottom Sizes (% of screen height)"
 
 #. Midscreen resize group title
-msgid "Midscreen Sizes"
-msgstr "Midscreen Sizes"
+msgid "Midscreen Sizes (% of screen)"
+msgstr "Midscreen Sizes (% of screen)"
 
 #. Resize size labels
 msgid "Small"
@@ -55,8 +55,8 @@ msgid "Restore default"
 msgstr "Restore default"
 
 #. Subtitle shown on a resize row when it will never be triggered due to ordering
-msgid "Will never be triggered"
-msgstr "Will never be triggered"
+msgid "Value must be larger than previous size"
+msgstr "Value must be larger than previous size"
 
 #. Restore all defaults row title
 msgid "Restore All Defaults"
@@ -69,6 +69,18 @@ msgstr "Reset all preferences to their default values"
 #. Restore all defaults button label
 msgid "Restore All"
 msgstr "Restore All"
+
+#. Confirmation dialog heading for restore all
+msgid "Restore All Defaults?"
+msgstr "Restore All Defaults?"
+
+#. Confirmation dialog body for restore all
+msgid "All preferences will be reset to their default values. This cannot be undone."
+msgstr "All preferences will be reset to their default values. This cannot be undone."
+
+#. Generic cancel button label
+msgid "Cancel"
+msgstr "Cancel"
 
 #. Tooltip for the reset button on each shortcut row
 msgid "Reset the shortcut to its default value"
@@ -83,8 +95,8 @@ msgid "Set shortcut"
 msgstr "Set shortcut"
 
 #. Shortcut rebind dialog body shown while awaiting key input
-msgid "await input…"
-msgstr "await input…"
+msgid "awaiting input…"
+msgstr "awaiting input…"
 
 #. Shortcut rebind dialog button: add a new shortcut alongside existing ones
 msgid "Add shortcut"

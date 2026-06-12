@@ -9,7 +9,7 @@ const _small = () => _('Small');
 const _medium = () => _('Medium');
 const _large = () => _('Large');
 const _restoreDefault = () => _('Restore default');
-const _neverTriggered = () => _('Will never be triggered');
+const _neverTriggered = () => _('Value must be larger than previous size');
 
 const getSizes = () => [
 	{ suffix: 'small', label: _small() },
@@ -23,28 +23,33 @@ export function addResizeGroup(
 	keyPrefix: string,
 	title: string,
 ) {
+	const isCustomized = (key: string) => {
+		if (settings.get_user_value(key) === null) return false;
+		const defaultVal = settings.get_default_value(key);
+		return defaultVal === null || settings.get_int(key) !== defaultVal.get_int32();
+	};
 	const group = new Adw.PreferencesGroup({ title });
-	page.add(group);
-
 	const rows: Adw.SpinRow[] = [];
 
 	for (const { suffix, label } of getSizes()) {
 		const key = `${keyPrefix}-${suffix}`;
 		const row = new Adw.SpinRow({
 			title: label,
-			digits: 2,
+			digits: 0,
 			adjustment: new Gtk.Adjustment({
-				lower: 0.05,
-				upper: 0.95,
-				step_increment: 0.01,
-				page_increment: 0.1,
-				value: settings.get_double(key),
+				lower: 5,
+				upper: 95,
+				step_increment: 1,
+				page_increment: 5,
+				value: settings.get_int(key),
 			}),
 		});
+		const percentLabel = new Gtk.Label({ label: '%' });
 
 		const resetBtn = new Gtk.Button({
 			valign: Gtk.Align.CENTER,
-			visible: settings.get_user_value(key) !== null,
+			opacity: isCustomized(key) ? 1 : 0,
+			sensitive: isCustomized(key),
 			icon_name: ICON_RESET,
 			tooltip_text: _restoreDefault(),
 			css_classes: ['flat', 'circular'],
@@ -52,9 +57,12 @@ export function addResizeGroup(
 
 		resetBtn.connect('clicked', () => settings.reset(key));
 		settings.connect(`changed::${key}`, () => {
-			resetBtn.visible = settings.get_user_value(key) !== null;
+			const customized = isCustomized(key);
+			resetBtn.opacity = customized ? 1 : 0;
+			resetBtn.sensitive = customized;
 		});
 
+		row.add_suffix(percentLabel);
 		row.add_suffix(resetBtn);
 		settings.bind(key, row, 'value', Gio.SettingsBindFlags.DEFAULT);
 		group.add(row);
@@ -89,4 +97,6 @@ export function addResizeGroup(
 		row.connect('notify::value', validate);
 	}
 	validate();
+
+	page.add(group);
 }

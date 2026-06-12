@@ -29,16 +29,16 @@ msgid "Configure the extension keybindings"
 msgstr "Seadista laienduse kiirklahve"
 
 #. Left/right resize group title
-msgid "Left / Right Sizes"
-msgstr "Vasak / parem suurus"
+msgid "Left / Right Sizes (% of screen width)"
+msgstr "Vasak / parem suurus (% ekraani laiusest)"
 
 #. Top/bottom resize group title
-msgid "Top / Bottom Sizes"
-msgstr "Üla / ala suurus"
+msgid "Top / Bottom Sizes (% of screen height)"
+msgstr "Üla / ala suurus (% ekraani kõrgusest)"
 
 #. Midscreen resize group title
-msgid "Midscreen Sizes"
-msgstr "Ekraani keskel suurused"
+msgid "Midscreen Sizes (% of screen)"
+msgstr "Ekraani keskel suurused (% ekraanist)"
 
 #. Resize size labels
 msgid "Small"
@@ -55,8 +55,8 @@ msgid "Restore default"
 msgstr "Taasta vaikimisi"
 
 #. Subtitle shown on a resize row when it will never be triggered due to ordering
-msgid "Will never be triggered"
-msgstr "Ei käivitu kunagi"
+msgid "Value must be larger than previous size"
+msgstr "Väärtus peab olema suurem eelmisest suurusest"
 
 #. Restore all defaults row title
 msgid "Restore All Defaults"
@@ -69,6 +69,18 @@ msgstr "Lähtesta kõik seaded vaikimisi väärtustele"
 #. Restore all defaults button label
 msgid "Restore All"
 msgstr "Taasta kõik"
+
+#. Confirmation dialog heading for restore all
+msgid "Restore All Defaults?"
+msgstr "Taasta kõik vaikimisi?"
+
+#. Confirmation dialog body for restore all
+msgid "All preferences will be reset to their default values. This cannot be undone."
+msgstr "Kõik seaded lähtestatakse vaikimisi väärtustele. Seda ei saa tagasi võtta."
+
+#. Generic cancel button label
+msgid "Cancel"
+msgstr "Tühista"
 
 #. Tooltip for the reset button on each shortcut row
 msgid "Reset the shortcut to its default value"
@@ -83,7 +95,7 @@ msgid "Set shortcut"
 msgstr "Määra kiirklahv"
 
 #. Shortcut rebind dialog body shown while awaiting key input
-msgid "await input…"
+msgid "awaiting input…"
 msgstr "Ootan sisendit…"
 
 #. Shortcut rebind dialog button: add a new shortcut alongside existing ones

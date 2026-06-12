@@ -4,7 +4,7 @@
   "description": "Gnome extension adding more window management keyboard shortcuts",
   "type": "module",
   "scripts": {
-    "clean": "rm -rf dist && rm -f bifocals.zip",
+    "clean": "rm -rf dist bifocals.zip locale schemas/gschemas.compiled",
     "compile-schemas": "glib-compile-schemas schemas",
     "compile-translations": "for lang in $(cat po/LINGUAS); do mkdir -p locale/$lang/LC_MESSAGES && msgfmt po/$lang.po -o locale/$lang/LC_MESSAGES/bifocals@shiznatix.mo; done",
     "copy-files": "copyfiles schemas/** dist && copyfiles metadata.json dist && copyfiles LICENSE dist && copyfiles locale/**/* dist",

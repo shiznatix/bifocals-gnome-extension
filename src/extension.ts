@@ -15,6 +15,7 @@ interface Rectangles {
 	window: RectangleDimensions;
 	workspace: RectangleDimensions;
 }
+type Fractions = [number, number, number];
 
 class Resizable {
 	window: Meta.Window;
@@ -53,10 +54,10 @@ class Resizable {
 		};
 	}
 
-	getResizeVal(dimensionKey: keyof RectangleDimensions, fractions: [number, number, number]) {
+	getResizeVal(dimensionKey: keyof RectangleDimensions, fractions: Fractions) {
 		const workspaceAxis = this.rectangles.workspace[dimensionKey];
 		const windowAxis = this.rectangles.window[dimensionKey];
-		const [s1, s2, s3] = fractions.map(f => Math.floor(workspaceAxis * f)) as [number, number, number];
+		const [s1, s2, s3] = fractions.map(f => Math.floor(workspaceAxis * f)) as Fractions;
 
 		if (windowAxis < s1) {
 			return s1;
@@ -83,10 +84,10 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('midscreen', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: [number, number, number] = [
-				this.#settings!.get_double('resize-midscreen-small'),
-				this.#settings!.get_double('resize-midscreen-medium'),
-				this.#settings!.get_double('resize-midscreen-large'),
+			const fractions: Fractions = [
+				this.#settings!.get_int('resize-midscreen-small') / 100,
+				this.#settings!.get_int('resize-midscreen-medium') / 100,
+				this.#settings!.get_int('resize-midscreen-large') / 100,
 			];
 			const newWidth = resizable.getResizeVal('w', fractions);
 			const newHeight = resizable.getResizeVal('h', fractions);
@@ -99,10 +100,10 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-left', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: [number, number, number] = [
-				this.#settings!.get_double('resize-left-right-small'),
-				this.#settings!.get_double('resize-left-right-medium'),
-				this.#settings!.get_double('resize-left-right-large'),
+			const fractions: Fractions = [
+				this.#settings!.get_int('resize-left-right-small') / 100,
+				this.#settings!.get_int('resize-left-right-medium') / 100,
+				this.#settings!.get_int('resize-left-right-large') / 100,
 			];
 			const newWidth = resizable.getResizeVal('w', fractions);
 
@@ -112,10 +113,10 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-right', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: [number, number, number] = [
-				this.#settings!.get_double('resize-left-right-small'),
-				this.#settings!.get_double('resize-left-right-medium'),
-				this.#settings!.get_double('resize-left-right-large'),
+			const fractions: Fractions = [
+				this.#settings!.get_int('resize-left-right-small') / 100,
+				this.#settings!.get_int('resize-left-right-medium') / 100,
+				this.#settings!.get_int('resize-left-right-large') / 100,
 			];
 			const newWidth = resizable.getResizeVal('w', fractions);
 			const xStart = rectangles.workspace.x + rectangles.workspace.w - newWidth;
@@ -126,10 +127,10 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-top', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: [number, number, number] = [
-				this.#settings!.get_double('resize-top-bottom-small'),
-				this.#settings!.get_double('resize-top-bottom-medium'),
-				this.#settings!.get_double('resize-top-bottom-large'),
+			const fractions: Fractions = [
+				this.#settings!.get_int('resize-top-bottom-small') / 100,
+				this.#settings!.get_int('resize-top-bottom-medium') / 100,
+				this.#settings!.get_int('resize-top-bottom-large') / 100,
 			];
 			const newHeight = resizable.getResizeVal('h', fractions);
 
@@ -139,10 +140,10 @@ export default class BifocalsExtension extends Extension {
 
 		this.#addKeybinding('toggle-bottom', (resizable) => {
 			const { rectangles, window } = resizable;
-			const fractions: [number, number, number] = [
-				this.#settings!.get_double('resize-top-bottom-small'),
-				this.#settings!.get_double('resize-top-bottom-medium'),
-				this.#settings!.get_double('resize-top-bottom-large'),
+			const fractions: Fractions = [
+				this.#settings!.get_int('resize-top-bottom-small') / 100,
+				this.#settings!.get_int('resize-top-bottom-medium') / 100,
+				this.#settings!.get_int('resize-top-bottom-large') / 100,
 			];
 			const newHeight = resizable.getResizeVal('h', fractions);
 			const yStart = rectangles.workspace.y + rectangles.workspace.h - newHeight;

@@ -21,7 +21,7 @@ interface KeyPressEvent {
 const _unset = () => _('<Unset>');
 const _resetTooltip = () => _('Reset the shortcut to its default value');
 const _setShortcutHeading = () => _('Set shortcut');
-const _awaitInput = () => _('await input…');
+const _awaitingInput = () => _('awaiting input…');
 const _addShortcut = () => _('Add shortcut');
 const _replaceShortcuts = () => _('Replace shortcut(s)');
 const _helpNote = () => _('Note: This dialog only detects shortcuts that are not actively intercepted by Gnome shell, e.g., natively or through another extension.');
@@ -56,7 +56,8 @@ export const ShortcutRow = GObject.registerClass({
 
 		const resetBtn = new Gtk.Button({
 			valign: Gtk.Align.CENTER,
-			visible: this.#isCustomized(),
+			opacity: this.#isCustomized() ? 1 : 0,
+			sensitive: this.#isCustomized(),
 			icon_name: 'edit-clear-symbolic',
 			tooltip_text: _resetTooltip(),
 			css_classes: ['flat', 'circular'],
@@ -69,12 +70,22 @@ export const ShortcutRow = GObject.registerClass({
 		resetBtn.connect('clicked', () => this.#settings.reset(this.#schemaKey));
 		this.#settings.connect(`changed::${schemaKey}`, () => {
 			label.label = this.#label();
-			resetBtn.visible = this.#isCustomized();
+			resetBtn.opacity = this.#isCustomized() ? 1 : 0;
+			resetBtn.sensitive = this.#isCustomized();
 		});
 	}
 
 	#isCustomized() {
-		return this.#settings.get_user_value(this.#schemaKey) !== null;
+		if (this.#settings.get_user_value(this.#schemaKey) === null) {
+			return false;
+		}
+		const defaultVal = this.#settings.get_default_value(this.#schemaKey);
+		if (defaultVal === null) {
+			return true;
+		}
+		const current = this.#settings.get_strv(this.#schemaKey);
+		const defaults = defaultVal.get_strv();
+		return current.length !== defaults.length || current.some((v, i) => v !== defaults[i]);
 	}
 
 	#escape(s: string) {
@@ -111,23 +122,20 @@ export const ShortcutRow = GObject.registerClass({
 		const eventController = new Gtk.EventControllerKey({
 			propagation_phase: Gtk.PropagationPhase.CAPTURE,
 		});
-
 		const dialog = new Adw.AlertDialog({
 			heading: _setShortcutHeading(),
-			body: `${_awaitInput()}\n\n${_help()}`,
+			body: `${_awaitingInput()}\n\n${_help()}`,
 
 			body_use_markup: true,
 		});
-		dialog.add_controller(eventController);
 
+		dialog.add_controller(eventController);
 		dialog.add_response('add', _addShortcut());
 		dialog.set_response_appearance('add', Adw.ResponseAppearance.SUGGESTED);
 		dialog.set_response_enabled('add', false);
-
 		dialog.add_response('replace', _replaceShortcuts());
 		dialog.set_response_appearance('replace', Adw.ResponseAppearance.DESTRUCTIVE);
 		dialog.set_response_enabled('replace', false);
-
 		dialog.connect('response', (_, response: 'add' | 'replace' | 'close') => {
 			if (acceleratorName === null) {
 				this.#unsetKeybinding();
