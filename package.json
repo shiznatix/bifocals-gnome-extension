@@ -1,0 +1,32 @@
+{
+  "name": "bifocals-gnome-extension",
+  "version": "3",
+  "description": "Gnome extension adding more window management keyboard shortcuts",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist bifocals.zip locale schemas/gschemas.compiled",
+    "compile-schemas": "glib-compile-schemas schemas",
+    "compile-translations": "for lang in $(cat po/LINGUAS); do mkdir -p locale/$lang/LC_MESSAGES && msgfmt po/$lang.po -o locale/$lang/LC_MESSAGES/bifocals@shiznatix.mo; done",
+    "copy-files": "copyfiles schemas/** dist && copyfiles metadata.json dist && copyfiles LICENSE dist && copyfiles 'locale/**/*' dist",
+    "zip": "cd dist && zip -r bifocals.zip . && mv bifocals.zip ..",
+    "build": "npm run clean && tsc && ([ -z \"$WITH_SCHEMAS\" ] || npm run compile-schemas) && npm run compile-translations && npm run copy-files && npm run zip && npm run test:static-analyzer",
+    "build:watch": "WITH_SCHEMAS=1 npm run build && tsc --watch",
+    "test:build": "WITH_SCHEMAS=1 npm run build",
+    "test:install-zip": "npm run test:build && ./scripts/install-zip.sh",
+    "test:static-analyzer": "./.venv/bin/shexli bifocals.zip",
+    "dev": "npm run dev:link && ./scripts/dev.sh",
+    "dev:link": "./scripts/link.sh"
+  },
+  "author": "shiznatix",
+  "license": "MIT",
+  "devDependencies": {
+    "copyfiles": "2.4.1",
+    "eslint": "9.39.4",
+    "eslint-plugin-jsdoc": "50.8.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.61.0"
+  },
+  "dependencies": {
+    "@girs/gnome-shell": "46.0.2"
+  }
+}

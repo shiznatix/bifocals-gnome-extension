@@ -28,6 +28,81 @@
       <summary>Toggle bottom anchoring</summary>
     </key>
 
+    <key type="i" name="resize-left-right-small">
+      <default>33</default>
+      <summary>Left / right small size</summary>
+    </key>
+    <key type="b" name="resize-left-right-small-enabled">
+      <default>true</default>
+      <summary>Left / right small size enabled</summary>
+    </key>
+    <key type="i" name="resize-left-right-medium">
+      <default>50</default>
+      <summary>Left / right medium size</summary>
+    </key>
+    <key type="b" name="resize-left-right-medium-enabled">
+      <default>true</default>
+      <summary>Left / right medium size enabled</summary>
+    </key>
+    <key type="i" name="resize-left-right-large">
+      <default>67</default>
+      <summary>Left / right large size</summary>
+    </key>
+    <key type="b" name="resize-left-right-large-enabled">
+      <default>true</default>
+      <summary>Left / right large size enabled</summary>
+    </key>
+
+    <key type="i" name="resize-top-bottom-small">
+      <default>33</default>
+      <summary>Top / bottom small size</summary>
+    </key>
+    <key type="b" name="resize-top-bottom-small-enabled">
+      <default>true</default>
+      <summary>Top / bottom small size enabled</summary>
+    </key>
+    <key type="i" name="resize-top-bottom-medium">
+      <default>50</default>
+      <summary>Top / bottom medium size</summary>
+    </key>
+    <key type="b" name="resize-top-bottom-medium-enabled">
+      <default>true</default>
+      <summary>Top / bottom medium size enabled</summary>
+    </key>
+    <key type="i" name="resize-top-bottom-large">
+      <default>67</default>
+      <summary>Top / bottom large size</summary>
+    </key>
+    <key type="b" name="resize-top-bottom-large-enabled">
+      <default>true</default>
+      <summary>Top / bottom large size enabled</summary>
+    </key>
+
+    <key type="i" name="resize-midscreen-small">
+      <default>20</default>
+      <summary>Midscreen small size</summary>
+    </key>
+    <key type="b" name="resize-midscreen-small-enabled">
+      <default>true</default>
+      <summary>Midscreen small size enabled</summary>
+    </key>
+    <key type="i" name="resize-midscreen-medium">
+      <default>25</default>
+      <summary>Midscreen medium size</summary>
+    </key>
+    <key type="b" name="resize-midscreen-medium-enabled">
+      <default>true</default>
+      <summary>Midscreen medium size enabled</summary>
+    </key>
+    <key type="i" name="resize-midscreen-large">
+      <default>33</default>
+      <summary>Midscreen large size</summary>
+    </key>
+    <key type="b" name="resize-midscreen-large-enabled">
+      <default>true</default>
+      <summary>Midscreen large size enabled</summary>
+    </key>
+
   </schema>
 
 </schemalist>
