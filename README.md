@@ -1,7 +1,7 @@
 # bifocals-gnome-extension
 Gnome extension adding more window management keyboard shortcuts
 
-Requires GNOME Shell **46, 47, or 48**.
+Requires GNOME Shell **46, 47, 48, 49, or 50**.
 
 # Installation
 Install from gnome-extensions: https://extensions.gnome.org/extension/4375/bifocals/

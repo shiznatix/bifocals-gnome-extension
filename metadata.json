@@ -5,7 +5,9 @@
   "shell-version": [
     "46",
     "47",
-    "48"
+    "48",
+    "49",
+    "50"
   ],
   "url": "https://github.com/shiznatix/bifocals-gnome-extension",
   "settings-schema": "org.gnome.shell.extensions.bifocals",
