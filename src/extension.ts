@@ -4,6 +4,9 @@ import Meta from 'gi://Meta';
 
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
+
+const SHELL_MAJOR = parseInt(Config.PACKAGE_VERSION.split('.')[0]);
 
 interface RectangleDimensions {
 	h: number;
@@ -70,9 +73,6 @@ class Resizable {
 }
 
 export default class BifocalsExtension extends Extension {
-	static KEYBINDING_MODE = Shell.ActionMode.NORMAL;
-	static KEYBINDING_FLAG = Meta.KeyBindingFlags.IGNORE_AUTOREPEAT;
-
 	#settings!: Gio.Settings | null;
 
 	enable() {
@@ -87,7 +87,7 @@ export default class BifocalsExtension extends Extension {
 			const xStart = rectangles.workspace.x + Math.floor((rectangles.workspace.w - newWidth) / 2);
 			const yStart = rectangles.workspace.y + Math.floor((rectangles.workspace.h - newHeight) / 2);
 
-			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			this.#unmaximize(window);
 			window.move_resize_frame(false, xStart, yStart, newWidth, newHeight);
 		});
 
@@ -97,7 +97,7 @@ export default class BifocalsExtension extends Extension {
 			if (fractions.length === 0) return;
 			const newWidth = resizable.getResizeVal('w', fractions);
 
-			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			this.#unmaximize(window);
 			window.move_resize_frame(false, rectangles.workspace.x, rectangles.workspace.y, newWidth, rectangles.workspace.h);
 		});
 
@@ -108,7 +108,7 @@ export default class BifocalsExtension extends Extension {
 			const newWidth = resizable.getResizeVal('w', fractions);
 			const xStart = rectangles.workspace.x + rectangles.workspace.w - newWidth;
 
-			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			this.#unmaximize(window);
 			window.move_resize_frame(false, xStart, rectangles.workspace.y, newWidth, rectangles.workspace.h);
 		});
 
@@ -118,7 +118,7 @@ export default class BifocalsExtension extends Extension {
 			if (fractions.length === 0) return;
 			const newHeight = resizable.getResizeVal('h', fractions);
 
-			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			this.#unmaximize(window);
 			window.move_resize_frame(false, rectangles.window.x, rectangles.workspace.y, rectangles.window.w, newHeight);
 		});
 
@@ -129,7 +129,7 @@ export default class BifocalsExtension extends Extension {
 			const newHeight = resizable.getResizeVal('h', fractions);
 			const yStart = rectangles.workspace.y + rectangles.workspace.h - newHeight;
 
-			window.unmaximize(Meta.MaximizeFlags.BOTH);
+			this.#unmaximize(window);
 			window.move_resize_frame(false, rectangles.window.x, yStart, rectangles.window.w, newHeight);
 		});
 	}
@@ -158,8 +158,8 @@ export default class BifocalsExtension extends Extension {
 		Main.wm.addKeybinding(
 			name,
 			this.#settings,
-			BifocalsExtension.KEYBINDING_FLAG,
-			BifocalsExtension.KEYBINDING_MODE,
+			Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+			Shell.ActionMode.NORMAL,
 			() => {
 				try {
 					return handler(new Resizable());
@@ -168,6 +168,17 @@ export default class BifocalsExtension extends Extension {
 				}
 			},
 		);
+	}
+
+	#unmaximize(window: Meta.Window) {
+		if (SHELL_MAJOR >= 49) {
+			// unmaximize takes no parameters since GNOME 49
+			(window as unknown as { unmaximize(): void }).unmaximize();
+		} else {
+			// avoid EGO-C49-003 false positive from static analyzer
+			const flags = (Meta.MaximizeFlags as unknown as Record<string, number>)['BOTH'];
+			(window as unknown as { unmaximize(f: number): void }).unmaximize(flags);
+		}
 	}
 
 	#removeKeybinding(name: string) {

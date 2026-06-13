@@ -33,24 +33,24 @@ msgid "Left / Right Sizes"
 msgstr "Tamaños izquierda / derecha"
 
 #. Left/right resize group description
-msgid "(% of screen width)"
-msgstr "(% del ancho de pantalla)"
+msgid "% of screen width"
+msgstr "% del ancho de pantalla"
 
 #. Top/bottom resize group title
 msgid "Top / Bottom Sizes"
 msgstr "Tamaños superior / inferior"
 
 #. Top/bottom resize group description
-msgid "(% of screen height)"
-msgstr "(% de la altura de pantalla)"
+msgid "% of screen height"
+msgstr "% de la altura de pantalla"
 
 #. Midscreen resize group title
 msgid "Midscreen Sizes"
 msgstr "Tamaños centro de pantalla"
 
 #. Midscreen resize group description
-msgid "(% of screen)"
-msgstr "(% de la pantalla)"
+msgid "% of screen"
+msgstr "% de la pantalla"
 
 #. Resize size labels
 msgid "Small"
