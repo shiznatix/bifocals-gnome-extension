@@ -7,3 +7,4 @@ gschemas.compiled
 .python-version
 .venv/
 uv.lock
+.github
