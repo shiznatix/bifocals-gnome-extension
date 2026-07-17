@@ -132,6 +132,11 @@ export default class BifocalsExtension extends Extension {
 			this.#unmaximize(window);
 			window.move_resize_frame(false, rectangles.window.x, yStart, rectangles.window.w, newHeight);
 		});
+
+		this.#addKeybinding('move-monitor-left', ({ window }) => this.#moveToMonitor(window, Meta.DisplayDirection.LEFT));
+		this.#addKeybinding('move-monitor-right', ({ window }) => this.#moveToMonitor(window, Meta.DisplayDirection.RIGHT));
+		this.#addKeybinding('move-monitor-up', ({ window }) => this.#moveToMonitor(window, Meta.DisplayDirection.UP));
+		this.#addKeybinding('move-monitor-down', ({ window }) => this.#moveToMonitor(window, Meta.DisplayDirection.DOWN));
 	}
 
 	disable() {
@@ -140,6 +145,10 @@ export default class BifocalsExtension extends Extension {
 		this.#removeKeybinding('toggle-right');
 		this.#removeKeybinding('toggle-top');
 		this.#removeKeybinding('toggle-bottom');
+		this.#removeKeybinding('move-monitor-left');
+		this.#removeKeybinding('move-monitor-right');
+		this.#removeKeybinding('move-monitor-up');
+		this.#removeKeybinding('move-monitor-down');
 		this.#settings = null;
 	}
 
@@ -183,5 +192,40 @@ export default class BifocalsExtension extends Extension {
 
 	#removeKeybinding(name: string) {
 		Main.wm.removeKeybinding(name);
+	}
+
+	#moveToMonitor(window: Meta.Window, direction: Meta.DisplayDirection) {
+		const display = Shell.Global.get().display;
+		const currentMonitor = window.get_monitor();
+		const targetMonitor = display.get_monitor_neighbor_index(currentMonitor, direction);
+
+		if (targetMonitor === -1) return;
+
+		const rect = window.get_frame_rect();
+		const workspace = window.get_workspace();
+		const currentWorkArea = workspace.get_work_area_for_monitor(currentMonitor);
+		const targetWorkArea = workspace.get_work_area_for_monitor(targetMonitor);
+
+		// Scale position and size by the same fraction of each monitor's work
+		// area, so a window filling the left third of a wide monitor still
+		// fills the left third of a narrower one. Plain `move_to_monitor`
+		// only shifts position, so an oversized window stays mostly
+		// overlapping its original monitor and Mutter snaps it back instead
+		// of moving it.
+		const relX = (rect.x - currentWorkArea.x) / currentWorkArea.width;
+		const relY = (rect.y - currentWorkArea.y) / currentWorkArea.height;
+		const relWidth = rect.width / currentWorkArea.width;
+		const relHeight = rect.height / currentWorkArea.height;
+
+		const newWidth = Math.min(Math.round(relWidth * targetWorkArea.width), targetWorkArea.width);
+		const newHeight = Math.min(Math.round(relHeight * targetWorkArea.height), targetWorkArea.height);
+
+		const maxX = targetWorkArea.x + targetWorkArea.width - newWidth;
+		const maxY = targetWorkArea.y + targetWorkArea.height - newHeight;
+		const newX = Math.min(Math.max(targetWorkArea.x + Math.round(relX * targetWorkArea.width), targetWorkArea.x), maxX);
+		const newY = Math.min(Math.max(targetWorkArea.y + Math.round(relY * targetWorkArea.height), targetWorkArea.y), maxY);
+
+		this.#unmaximize(window);
+		window.move_resize_frame(false, newX, newY, newWidth, newHeight);
 	}
 }

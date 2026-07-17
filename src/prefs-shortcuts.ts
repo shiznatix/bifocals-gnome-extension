@@ -142,7 +142,7 @@ export const ShortcutRow = GObject.registerClass({
 			propagation_phase: Gtk.PropagationPhase.CAPTURE,
 		});
 		const dialog = new Adw.AlertDialog({
-			heading: _setShortcutHeading(),
+			heading: `${_setShortcutHeading()}: ${this.title}`,
 			body: `${_awaitingInput()}\n\n${_help()}`,
 
 			body_use_markup: true,

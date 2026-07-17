@@ -1,6 +1,6 @@
 {
   "name": "bifocals-gnome-extension",
-  "version": "3",
+  "version": "4.1",
   "description": "Gnome extension adding more window management keyboard shortcuts",
   "type": "module",
   "scripts": {
@@ -14,19 +14,18 @@
     "test:build": "WITH_SCHEMAS=1 npm run build",
     "test:install-zip": "npm run test:build && ./scripts/install-zip.sh",
     "test:static-analyzer": "./.venv/bin/shexli bifocals.zip",
-    "dev": "npm run dev:link && ./scripts/dev.sh",
     "dev:link": "./scripts/link.sh"
   },
   "author": "shiznatix",
   "license": "MIT",
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "eslint": "10.5.0",
-    "eslint-plugin-jsdoc": "63.0.2",
-    "typescript": "6.0.3",
+    "eslint": "10.7.0",
+    "eslint-plugin-jsdoc": "63.0.13",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.61.0"
   },
   "dependencies": {
-    "@girs/gnome-shell": "50.0.0"
+    "@girs/gnome-shell": "50.0.4"
   }
 }
