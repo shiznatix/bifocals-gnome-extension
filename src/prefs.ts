@@ -11,6 +11,10 @@ const shortcuts = [
 	'toggle-top',
 	'toggle-bottom',
 	'midscreen',
+	'move-monitor-left',
+	'move-monitor-right',
+	'move-monitor-up',
+	'move-monitor-down',
 ] as const;
 
 const resizeKeys = [
