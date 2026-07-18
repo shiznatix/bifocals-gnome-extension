@@ -9,7 +9,7 @@ Install from gnome-extensions: https://extensions.gnome.org/extension/4375/bifoc
 # Shortcuts
 All shortcuts can be modified in the preferences. See `gnome-tweaks` or `extensions`.
 
-**__NB!__ GNOME / Ubuntu took the best shortcuts for their window management things. I use those same shortcuts as the default config for Bifocals. You should probably disable the GNOME ones.**
+**__NB!__ The default shortcuts are all chosen to avoid clashing with GNOME / Ubuntu's own window-management bindings, so they should work out of the box. If you rebind an action to a shortcut GNOME already uses, disable the GNOME one first, otherwise the two conflict and which one wins is unpredictable.**
 
 | Name | Description | Default Keybinding |
 | ---- | ----------- | ------------------ |
@@ -18,10 +18,10 @@ All shortcuts can be modified in the preferences. See `gnome-tweaks` or `extensi
 | `toggle-top` | Toggle height while anchored to the top. Cycles through up to 3 configurable heights (default: 33%, 50%, 67% of screen height). The window's horizontal position and width are preserved. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Up |
 | `toggle-bottom` | Toggle height while anchored to the bottom. Cycles through up to 3 configurable heights (default: 33%, 50%, 67% of screen height). The window's horizontal position and width are preserved. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Down |
 | `midscreen` | Move the window to the centre of the screen. Cycles through up to 3 configurable sizes (default: 20%, 25%, 33% of each screen axis). Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+c |
-| `move-monitor-left` | Move the window to the monitor to the left, preserving its relative position. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Shift&gt;+Left |
-| `move-monitor-right` | Move the window to the monitor to the right, preserving its relative position. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Shift&gt;+Right |
-| `move-monitor-up` | Move the window to the monitor above, preserving its relative position. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Shift&gt;+Up |
-| `move-monitor-down` | Move the window to the monitor below, preserving its relative position. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Shift&gt;+Down |
+| `move-monitor-left` | Move the window to the monitor to the left, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+Home |
+| `move-monitor-right` | Move the window to the monitor to the right, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+End |
+| `move-monitor-up` | Move the window to the monitor above, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | _(unbound by default)_ |
+| `move-monitor-down` | Move the window to the monitor below, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | _(unbound by default)_ |
 
 
 # Preferences

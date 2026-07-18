@@ -44,7 +44,7 @@ const _keybindingsDesc = () => _('Configure the extension keybindings');
 const _leftRightTitle = () => _('Left / Right Sizes');
 const _leftRightDesc = () => _('% of screen width');
 const _topBottomTitle = () => _('Top / Bottom Sizes');
-const _topButtonDesc = () => _('% of screen height')
+const _topBottomDesc = () => _('% of screen height');
 const _midscreenTitle = () => _('Midscreen Sizes');
 const _midscreenDesc = () => _('% of screen');
 
@@ -72,7 +72,7 @@ export default class BifocalsPrefs extends ExtensionPreferences {
 			settings,
 			keyPrefix: 'resize-top-bottom',
 			title: _topBottomTitle(),
-			description: _topButtonDesc(),
+			description: _topBottomDesc(),
 		}));
 		page.add(new ResizeGroup({
 			settings,
