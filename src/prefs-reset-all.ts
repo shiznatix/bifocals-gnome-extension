@@ -46,7 +46,7 @@ export function addResetAllGroup(
 	};
 	updateSensitivity();
 
-	const handlerIds = keys.map((key) => settings.connect(`changed::${key}`, updateSensitivity));
+	const handlerIds = keys.map((k) => settings.connect(`changed::${k}`, updateSensitivity));
 	resetAllBtn.connect('destroy', () => {
 		for (const id of handlerIds) {
 			settings.disconnect(id);

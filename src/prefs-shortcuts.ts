@@ -265,7 +265,7 @@ export const ShortcutRow = GObject.registerClass({
 			unmodifiedKeyval = Gdk.KEY_Tab;
 		}
 
-		if (unmodifiedKeyval === Gdk.KEY_Sys_Req && (usedModifiers & Gdk.ModifierType.ALT_MASK) != 0) {
+		if (unmodifiedKeyval === Gdk.KEY_Sys_Req && (usedModifiers & Gdk.ModifierType.ALT_MASK) !== 0) {
 			unmodifiedKeyval = Gdk.KEY_Print;
 		}
 

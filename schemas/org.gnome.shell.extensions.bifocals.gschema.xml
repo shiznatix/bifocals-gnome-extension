@@ -29,22 +29,22 @@
     </key>
 
     <key type="as" name="move-monitor-left">
-      <default><![CDATA[['<Super><Shift>Left']]]></default>
+      <default><![CDATA[['<Super><Ctrl>Home']]]></default>
       <summary>Move window to monitor on the left</summary>
     </key>
 
     <key type="as" name="move-monitor-right">
-      <default><![CDATA[['<Super><Shift>Right']]]></default>
+      <default><![CDATA[['<Super><Ctrl>End']]]></default>
       <summary>Move window to monitor on the right</summary>
     </key>
 
     <key type="as" name="move-monitor-up">
-      <default><![CDATA[['<Super><Shift>Up']]]></default>
+      <default><![CDATA[[]]]></default>
       <summary>Move window to monitor above</summary>
     </key>
 
     <key type="as" name="move-monitor-down">
-      <default><![CDATA[['<Super><Shift>Down']]]></default>
+      <default><![CDATA[[]]]></default>
       <summary>Move window to monitor below</summary>
     </key>
 

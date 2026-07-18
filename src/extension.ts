@@ -60,7 +60,7 @@ class Resizable {
 	getResizeVal(dimensionKey: keyof RectangleDimensions, fractions: Fractions) {
 		const workspaceAxis = this.rectangles.workspace[dimensionKey];
 		const windowAxis = this.rectangles.window[dimensionKey];
-		const sizes = fractions.map(f => Math.floor(workspaceAxis * f));
+		const sizes = fractions.map((f) => Math.floor(workspaceAxis * f));
 
 		for (const size of sizes) {
 			if (windowAxis < size) {
@@ -154,8 +154,8 @@ export default class BifocalsExtension extends Extension {
 
 	#getFractions(key: string): Fractions {
 		return (['small', 'medium', 'large'] as const)
-			.filter(size => this.#settings!.get_boolean(`${key}-${size}-enabled`))
-			.map(size => this.#settings!.get_int(`${key}-${size}`) / 100);
+			.filter((size) => this.#settings!.get_boolean(`${key}-${size}-enabled`))
+			.map((size) => this.#settings!.get_int(`${key}-${size}`) / 100);
 	}
 
 	#addKeybinding(name: string, handler: (resizable: Resizable) => void) {
@@ -206,12 +206,6 @@ export default class BifocalsExtension extends Extension {
 		const currentWorkArea = workspace.get_work_area_for_monitor(currentMonitor);
 		const targetWorkArea = workspace.get_work_area_for_monitor(targetMonitor);
 
-		// Scale position and size by the same fraction of each monitor's work
-		// area, so a window filling the left third of a wide monitor still
-		// fills the left third of a narrower one. Plain `move_to_monitor`
-		// only shifts position, so an oversized window stays mostly
-		// overlapping its original monitor and Mutter snaps it back instead
-		// of moving it.
 		const relX = (rect.x - currentWorkArea.x) / currentWorkArea.width;
 		const relY = (rect.y - currentWorkArea.y) / currentWorkArea.height;
 		const relWidth = rect.width / currentWorkArea.width;
