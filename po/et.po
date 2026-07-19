@@ -127,3 +127,91 @@ msgstr "Vajutage <b>ESC</b>, et sulgeda dialoog."
 
 msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Vajutage <b>BackSpace</b>, et tühistada kiirklahv."
+
+#. GSettings schema summaries
+msgid "Midscreen"
+msgstr "Ekraani keskel"
+
+msgid "Toggle left anchoring"
+msgstr "Lülita vasakule ankurdamine"
+
+msgid "Toggle right anchoring"
+msgstr "Lülita paremale ankurdamine"
+
+msgid "Toggle top anchoring"
+msgstr "Lülita üles ankurdamine"
+
+msgid "Toggle bottom anchoring"
+msgstr "Lülita alla ankurdamine"
+
+msgid "Move one monitor left"
+msgstr "Liiguta üks ekraan vasakule"
+
+msgid "Move one monitor right"
+msgstr "Liiguta üks ekraan paremale"
+
+msgid "Move one monitor up"
+msgstr "Liiguta üks ekraan üles"
+
+msgid "Move one monitor down"
+msgstr "Liiguta üks ekraan alla"
+
+msgid "Toggle maximize"
+msgstr "Lülita maksimeerimine"
+
+msgid "Restore to pre-Bifocals geometry"
+msgstr "Taasta Bifocalsi-eelne geomeetria"
+
+msgid "Left / right small size"
+msgstr "Vasak / parem väike suurus"
+
+msgid "Left / right small size enabled"
+msgstr "Vasak / parem väike suurus lubatud"
+
+msgid "Left / right medium size"
+msgstr "Vasak / parem keskmine suurus"
+
+msgid "Left / right medium size enabled"
+msgstr "Vasak / parem keskmine suurus lubatud"
+
+msgid "Left / right large size"
+msgstr "Vasak / parem suur suurus"
+
+msgid "Left / right large size enabled"
+msgstr "Vasak / parem suur suurus lubatud"
+
+msgid "Top / bottom small size"
+msgstr "Üla / ala väike suurus"
+
+msgid "Top / bottom small size enabled"
+msgstr "Üla / ala väike suurus lubatud"
+
+msgid "Top / bottom medium size"
+msgstr "Üla / ala keskmine suurus"
+
+msgid "Top / bottom medium size enabled"
+msgstr "Üla / ala keskmine suurus lubatud"
+
+msgid "Top / bottom large size"
+msgstr "Üla / ala suur suurus"
+
+msgid "Top / bottom large size enabled"
+msgstr "Üla / ala suur suurus lubatud"
+
+msgid "Midscreen small size"
+msgstr "Ekraani keskel väike suurus"
+
+msgid "Midscreen small size enabled"
+msgstr "Ekraani keskel väike suurus lubatud"
+
+msgid "Midscreen medium size"
+msgstr "Ekraani keskel keskmine suurus"
+
+msgid "Midscreen medium size enabled"
+msgstr "Ekraani keskel keskmine suurus lubatud"
+
+msgid "Midscreen large size"
+msgstr "Ekraani keskel suur suurus"
+
+msgid "Midscreen large size enabled"
+msgstr "Ekraani keskel suur suurus lubatud"

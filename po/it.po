@@ -127,3 +127,91 @@ msgstr "Premere <b>ESC</b> per chiudere la finestra di dialogo."
 
 msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Premere <b>BackSpace</b> per rimuovere la scorciatoia da tastiera."
+
+#. GSettings schema summaries
+msgid "Midscreen"
+msgstr "Centro schermo"
+
+msgid "Toggle left anchoring"
+msgstr "Attiva/disattiva ancoraggio a sinistra"
+
+msgid "Toggle right anchoring"
+msgstr "Attiva/disattiva ancoraggio a destra"
+
+msgid "Toggle top anchoring"
+msgstr "Attiva/disattiva ancoraggio in alto"
+
+msgid "Toggle bottom anchoring"
+msgstr "Attiva/disattiva ancoraggio in basso"
+
+msgid "Move one monitor left"
+msgstr "Sposta di un monitor a sinistra"
+
+msgid "Move one monitor right"
+msgstr "Sposta di un monitor a destra"
+
+msgid "Move one monitor up"
+msgstr "Sposta di un monitor in alto"
+
+msgid "Move one monitor down"
+msgstr "Sposta di un monitor in basso"
+
+msgid "Toggle maximize"
+msgstr "Attiva/disattiva massimizza"
+
+msgid "Restore to pre-Bifocals geometry"
+msgstr "Ripristina la geometria precedente a Bifocals"
+
+msgid "Left / right small size"
+msgstr "Dimensione piccola sinistra / destra"
+
+msgid "Left / right small size enabled"
+msgstr "Dimensione piccola sinistra / destra attivata"
+
+msgid "Left / right medium size"
+msgstr "Dimensione media sinistra / destra"
+
+msgid "Left / right medium size enabled"
+msgstr "Dimensione media sinistra / destra attivata"
+
+msgid "Left / right large size"
+msgstr "Dimensione grande sinistra / destra"
+
+msgid "Left / right large size enabled"
+msgstr "Dimensione grande sinistra / destra attivata"
+
+msgid "Top / bottom small size"
+msgstr "Dimensione piccola alto / basso"
+
+msgid "Top / bottom small size enabled"
+msgstr "Dimensione piccola alto / basso attivata"
+
+msgid "Top / bottom medium size"
+msgstr "Dimensione media alto / basso"
+
+msgid "Top / bottom medium size enabled"
+msgstr "Dimensione media alto / basso attivata"
+
+msgid "Top / bottom large size"
+msgstr "Dimensione grande alto / basso"
+
+msgid "Top / bottom large size enabled"
+msgstr "Dimensione grande alto / basso attivata"
+
+msgid "Midscreen small size"
+msgstr "Dimensione piccola centro schermo"
+
+msgid "Midscreen small size enabled"
+msgstr "Dimensione piccola centro schermo attivata"
+
+msgid "Midscreen medium size"
+msgstr "Dimensione media centro schermo"
+
+msgid "Midscreen medium size enabled"
+msgstr "Dimensione media centro schermo attivata"
+
+msgid "Midscreen large size"
+msgstr "Dimensione grande centro schermo"
+
+msgid "Midscreen large size enabled"
+msgstr "Dimensione grande centro schermo attivata"

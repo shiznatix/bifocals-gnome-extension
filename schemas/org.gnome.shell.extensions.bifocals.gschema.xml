@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist>
+<schemalist gettext-domain="bifocals@shiznatix">
 
   <schema id="org.gnome.shell.extensions.bifocals" path="/org/gnome/shell/extensions/bifocals/">
 
@@ -30,22 +30,32 @@
 
     <key type="as" name="move-monitor-left">
       <default><![CDATA[['<Super><Ctrl>Home']]]></default>
-      <summary>Move window to monitor on the left</summary>
+      <summary>Move one monitor left</summary>
     </key>
 
     <key type="as" name="move-monitor-right">
       <default><![CDATA[['<Super><Ctrl>End']]]></default>
-      <summary>Move window to monitor on the right</summary>
+      <summary>Move one monitor right</summary>
     </key>
 
     <key type="as" name="move-monitor-up">
-      <default><![CDATA[[]]]></default>
-      <summary>Move window to monitor above</summary>
+      <default><![CDATA[['<Super><Ctrl>Page_Up']]]></default>
+      <summary>Move one monitor up</summary>
     </key>
 
     <key type="as" name="move-monitor-down">
-      <default><![CDATA[[]]]></default>
-      <summary>Move window to monitor below</summary>
+      <default><![CDATA[['<Super><Ctrl>Page_Down']]]></default>
+      <summary>Move one monitor down</summary>
+    </key>
+
+    <key type="as" name="toggle-maximize">
+      <default><![CDATA[['<Super><Ctrl>Return']]]></default>
+      <summary>Toggle maximize</summary>
+    </key>
+
+    <key type="as" name="restore-window">
+      <default><![CDATA[['<Super><Ctrl>BackSpace']]]></default>
+      <summary>Restore to pre-Bifocals geometry</summary>
     </key>
 
     <key type="i" name="resize-left-right-small">

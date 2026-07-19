@@ -20,8 +20,47 @@ All shortcuts can be modified in the preferences. See `gnome-tweaks` or `extensi
 | `midscreen` | Move the window to the centre of the screen. Cycles through up to 3 configurable sizes (default: 20%, 25%, 33% of each screen axis). Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+c |
 | `move-monitor-left` | Move the window to the monitor to the left, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+Home |
 | `move-monitor-right` | Move the window to the monitor to the right, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+End |
-| `move-monitor-up` | Move the window to the monitor above, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | _(unbound by default)_ |
-| `move-monitor-down` | Move the window to the monitor below, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | _(unbound by default)_ |
+| `move-monitor-up` | Move the window to the monitor above, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+Page&nbsp;Up |
+| `move-monitor-down` | Move the window to the monitor below, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+Page&nbsp;Down |
+| `toggle-maximize` | Maximize the window, or restore it if it is already maximized. | &lt;Super&gt;+&lt;Ctrl&gt;+Return |
+| `restore-window` | Restore the window to the size and position it had before the current run of Bifocals actions. Leaving this shortcut unset disables restore tracking altogether. See [Restoring windows](#restoring-windows). | &lt;Super&gt;+&lt;Ctrl&gt;+BackSpace |
+
+
+# Restoring windows
+`restore-window` puts a window back where it was **before the current run of Bifocals actions**, not merely one step back.
+
+Bifocals remembers a window's geometry the first time an action moves it, and keeps that same baseline through any number of consecutive actions. So cycling `toggle-left` through all three of its sizes and then restoring returns the window to where it started, not to the previous size step.
+
+If you move or resize a window yourself in between, that new geometry becomes the baseline instead:
+
+1. Drag a window somewhere and size it how you like — call that **A**.
+2. `toggle-left`, then `toggle-left` again to cycle its width.
+3. `restore-window` puts the window back at **A**.
+4. Now drag it somewhere else, to **B**. The next `restore-window` targets **B**.
+
+This works for any change you make, not just mouse drags — keyboard resizing and moves made by other extensions are all picked up, because Bifocals compares the window's actual geometry against what it last set rather than watching for specific events.
+
+Two details worth knowing:
+
+- If a window is on a different monitor than when the baseline was captured, the baseline is scaled to the new monitor, keeping its relative size and position (the same way `move-monitor-*` works). Restoring never flings a window back to a monitor it is no longer on.
+- Windows that quantise their own size — `gnome-terminal` sizes itself in whole character cells, for example — never land exactly on the requested rectangle. Bifocals treats geometry within 20px as unchanged so these windows are not mistaken for having been resized by hand.
+
+### Per-application fallback
+
+A window Bifocals has never touched has no baseline of its own, so `restore-window` falls back to the most recent baseline recorded for **any window of the same application**. Open a fresh Nautilus and restore it, and it goes where the previous Nautilus came from.
+
+- A window's own baseline always wins; the fallback only applies when there is none.
+- The application entry is not consumed, so every new window of that application can use it.
+- Only normal top level windows take part. Dialogs, menus and utility windows share their application's id but are not representative of its usual geometry, so they neither record nor restore through this fallback.
+- Entries live in memory for the session and are dropped when the extension is disabled or GNOME Shell restarts.
+
+### Turning it off
+
+Clearing the `restore-window` shortcut turns restore tracking off entirely. Since the shortcut is the only way to reach a recorded baseline, an unset shortcut means there is nothing worth recording: Bifocals stops tracking and discards everything already recorded.
+
+Every other shortcut keeps working, it just moves windows without keeping a history. `toggle-maximize` still toggles — unmaximizing falls through to the geometry GNOME itself keeps for a maximized window, rather than to a Bifocals baseline.
+
+This takes effect immediately, no reload needed. Setting a shortcut again starts tracking from scratch.
 
 
 # Preferences
@@ -46,42 +85,27 @@ A **Restore All** button at the bottom of the page resets every preference (keyb
 
 # Development
 
-__NB!__ Just switch over to Xorg for dev. You can do `Alt+F2` → `r` → `Enter` to reload the extension changes without logging in / out.
+__NB!__ Just switch over to Xorg for dev. You can restart Xorg without log out/in!
 
-### Prerequisites
+### Tooling
 ```
-node / npm
+node / npm      TypeScript and eslint
+make            the build pipeline
+jq              assembles metadata.json
+zip             packages the extension
+gettext         msgfmt, compiles translations
 ```
+`make lint-zip` additionally needs `shexli` in a `.venv/`; it is optional and not part of a normal build.
 
-### Setup Environment
-
-Install dependencies, build the files (with compiled schemas), and symlink it
-```shell
-npm install
-npm run test:build
-npm run dev:link
-```
-
-This symlinks `dist/` into `~/.local/share/gnome-shell/extensions/` under a distinct UUID, `bifocals-dev@shiznatix`, rather than the published `bifocals@shiznatix`, so GNOME doesn't fight you trying to install the published version every 5 seconds.
-
-Since this is a brand new extension, you have to enable it one time:
-```shell
-gnome-extensions enable bifocals-dev@shiznatix
-```
-
-If that errors with `Extension "bifocals-dev@shiznatix" does not exist`, log out and log back in and try again.
-Once its enabled, log out / in again (__To Xorg!__) and now you can dev (hopefully).
-
-### Do the Dev
-
-1. Watch code changes and rebuild on save:
+## Install and Dev
+1. Install dependencies and install dev extension
 	```shell
-	npm run build:watch
+	make dev deps all
 	```
 
-2. Make changes and save the files
+2. Reload Xorg `Alt+F2` → `r` → `Enter`. After it reloads, it should be visibile and active in gnome-extensions
 
-3. Reload Xorg to load the changes into your running extensions: `Alt+F2` → `r` → `Enter`
+3. Make changes and save the files. Reload Xorg every time you want to load your changes into the desktop.
 
 ### Logging
 
@@ -99,18 +123,11 @@ Currently available languages: **de**, **en**, **es**, **et**, **it**, **sv**.
 To add a new language:
 1. Copy `po/en.po` to `po/<lang>.po` and translate the `msgstr` lines.
 2. Add `<lang>` to `po/LINGUAS`.
-3. Run `npm run build` — `.mo` files are compiled and included automatically.
+3. Run `make locale` to compile the languages
 
 # Package for Distribution
-Compiles TypeScript, compiles translations, and packages a `bifocals.zip` ready for installation:
+Lints, compiles TypeScript, compiles translations, assembles `metadata.json`, then packages `dist/bifocals.zip` ready for installation:
 ```shell
-npm run build
+make build package
 ```
-
-# Helpful commands & links
-* `dbus-run-session -- gnome-shell --nested --wayland` Run Gnome in a nested session
-* `journalctl -f -o cat /usr/bin/gnome-shell` Follow logs
-* `<Alt>+F2` then `r` - Restart Gnome, picking up extension code changes (Xorg only; Wayland requires logging out and back in instead)
-* `gnome-extensions prefs bifocals-dev@shiznatix` Open the dev build's preferences dialog (`bifocals@shiznatix` for the published one)
-* `glib-compile-schemas schemas` Must be run after any changes to gschema.xml
-* A good project to use as an example: https://github.com/gTile/gTile
+`package` only zips whatever is in `build/`, so it needs `build` ahead of it. Leave `dev` off for the published variant — `make dev build package` produces `dist/bifocals-dev.zip` under the dev UUID instead.

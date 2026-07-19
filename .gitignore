@@ -1,6 +1,7 @@
 node_modules
-bifocals.zip
+*.zip
 dist/
+build/
 locale/
 .vscode/
 gschemas.compiled

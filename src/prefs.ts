@@ -15,6 +15,8 @@ const shortcuts = [
 	'move-monitor-right',
 	'move-monitor-up',
 	'move-monitor-down',
+	'toggle-maximize',
+	'restore-window',
 ] as const;
 
 const resizeKeys = [
