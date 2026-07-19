@@ -1,0 +1,17 @@
+Simple window anchoring / resizing / moving / screen placement manager that works.
+
+Window size cycling between up to 3 percentage values based on the anchor point. All steps are optional and all values configurable.
+* Left / Right - maximizes window vertically and cycles through the percentage of the screen width.
+* Top / Bottom - keeps the window's horizontal position and width, and cycles through the percentage of the screen height.
+* Mid-screen - centres the window and cycles through the percentage of both screen axes.
+
+Move windows between screens / monitors. Optional
+* Preserves the relative dimensions, so the window takes the same relative space and location as it did on the previous screen.
+* Does not get stuck when screens have different sizes or dimensions.
+
+Maximize
+* Simple, just bringing in a logical shortcut if you want to manage it from here.
+
+Restore
+* Restore a window to the size and position it had before any Bifocals commands.
+* Windows you have never touched fall back to the last restore point of another window of the same application.
