@@ -5,13 +5,15 @@ Window size cycling between up to 3 percentage values based on the anchor point.
 * Top / Bottom - keeps the window's horizontal position and width, and cycles through the percentage of the screen height.
 * Mid-screen - centres the window and cycles through the percentage of both screen axes.
 
-Move windows between screens / monitors. Optional
+Move windows between screens / monitors.
 * Preserves the relative dimensions, so the window takes the same relative space and location as it did on the previous screen.
 * Does not get stuck when screens have different sizes or dimensions.
 
 Maximize
-* Simple, just bringing in a logical shortcut if you want to manage it from here.
+* Toggles the window between maximized and its previous size.
 
 Restore
-* Restore a window to the size and position it had before any Bifocals commands.
-* New windows default restore value is last saved restore for any window of the same application.
+* Restore a window to the size and position it had before the current run of Bifocals commands.
+* A window Bifocals has never touched falls back to the last saved restore point for any window of the same application.
+
+Every shortcut is rebindable, and clearing one disables that action.

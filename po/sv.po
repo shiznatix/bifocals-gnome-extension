@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Preferences window title
-msgid "Bifocal Preferences"
+msgid "Bifocals Preferences"
 msgstr "Bifocals-inställningar"
 
 #. Keybindings group title

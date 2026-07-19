@@ -87,7 +87,7 @@ export class BifocalWindow {
 		} else {
 			// avoid EGO-C49-003 false positive from static analyzer
 			const flags = (Meta.MaximizeFlags as unknown as Record<string, number>)['BOTH'];
-			(this.window as unknown as { maximize(f: number): void }).maximize(flags);
+			(this.window as unknown as { maximize(_: number): void }).maximize(flags);
 		}
 	}
 
@@ -98,7 +98,7 @@ export class BifocalWindow {
 		} else {
 			// avoid EGO-C49-003 false positive from static analyzer
 			const flags = (Meta.MaximizeFlags as unknown as Record<string, number>)['BOTH'];
-			(this.window as unknown as { unmaximize(f: number): void }).unmaximize(flags);
+			(this.window as unknown as { unmaximize(_: number): void }).unmaximize(flags);
 		}
 	}
 

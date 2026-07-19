@@ -87,11 +87,13 @@ export const ShortcutRow = GObject.registerClass({
 
 		this.connect('activated', this.#onRebindKey.bind(this));
 		resetBtn.connect('clicked', () => this.#settings.reset(this.#schemaKey));
-		this.#settings.connect(`changed::${schemaKey}`, () => {
+
+		const handlerId = this.#settings.connect(`changed::${schemaKey}`, () => {
 			label.label = this.#label();
 			resetBtn.opacity = this.#isCustomized() ? 1 : 0;
 			resetBtn.sensitive = this.#isCustomized();
 		});
+		this.connect('destroy', () => this.#settings.disconnect(handlerId));
 	}
 
 	#isCustomized() {
@@ -180,12 +182,20 @@ export const ShortcutRow = GObject.registerClass({
 
 			switch (keyval) {
 				case Gdk.KEY_Escape:
-					// triggers 'response' callback
-					dialog.close();
-					return Gdk.EVENT_STOP;
+					if (modifier === 0) {
+						// triggers 'response' callback
+						dialog.close();
+						return Gdk.EVENT_STOP;
+					}
+				// intentionally fallthrough
 				case Gdk.KEY_BackSpace:
-					acceleratorName = null;
-					break;
+					// Bare BackSpace unsets, but modified it is a shortcut like any
+					// other. `restore-window` defaults to <Super><Ctrl>BackSpace.
+					if (modifier === 0) {
+						acceleratorName = null;
+						break;
+					}
+				// intentionally fallthrough
 				case Gdk.KEY_Return:
 					if (modifier === 0) {
 						// <Enter> may confirm a shortcut, if one was recognized already.
@@ -206,7 +216,7 @@ export const ShortcutRow = GObject.registerClass({
 					}
 				// intentionally fallthrough
 				default:
-					acceleratorName = Gtk.accelerator_name(keyval, modifier)!
+					acceleratorName = Gtk.accelerator_name(keyval, modifier)!;
 			}
 
 			const name = acceleratorName ?? _unset();
