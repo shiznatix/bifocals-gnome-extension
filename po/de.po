@@ -129,20 +129,20 @@ msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Drücke <b>BackSpace</b>, um das Tastenkürzel zu entfernen."
 
 #. GSettings schema summaries
-msgid "Midscreen"
-msgstr "Bildschirmmitte"
+msgid "Cycle midscreen sizes"
+msgstr "Bildschirmmitte-Größen durchschalten"
 
-msgid "Toggle left anchoring"
-msgstr "Verankerung links umschalten"
+msgid "Cycle left anchoring"
+msgstr "Verankerung links durchschalten"
 
-msgid "Toggle right anchoring"
-msgstr "Verankerung rechts umschalten"
+msgid "Cycle right anchoring"
+msgstr "Verankerung rechts durchschalten"
 
-msgid "Toggle top anchoring"
-msgstr "Verankerung oben umschalten"
+msgid "Cycle top anchoring"
+msgstr "Verankerung oben durchschalten"
 
-msgid "Toggle bottom anchoring"
-msgstr "Verankerung unten umschalten"
+msgid "Cycle bottom anchoring"
+msgstr "Verankerung unten durchschalten"
 
 msgid "Move one monitor left"
 msgstr "Einen Monitor nach links verschieben"

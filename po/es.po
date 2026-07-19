@@ -129,20 +129,20 @@ msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Pulse <b>BackSpace</b> para eliminar el atajo de teclado."
 
 #. GSettings schema summaries
-msgid "Midscreen"
-msgstr "Centro de pantalla"
+msgid "Cycle midscreen sizes"
+msgstr "Rotar tamaños del centro de pantalla"
 
-msgid "Toggle left anchoring"
-msgstr "Alternar anclaje a la izquierda"
+msgid "Cycle left anchoring"
+msgstr "Rotar anclaje a la izquierda"
 
-msgid "Toggle right anchoring"
-msgstr "Alternar anclaje a la derecha"
+msgid "Cycle right anchoring"
+msgstr "Rotar anclaje a la derecha"
 
-msgid "Toggle top anchoring"
-msgstr "Alternar anclaje arriba"
+msgid "Cycle top anchoring"
+msgstr "Rotar anclaje arriba"
 
-msgid "Toggle bottom anchoring"
-msgstr "Alternar anclaje abajo"
+msgid "Cycle bottom anchoring"
+msgstr "Rotar anclaje abajo"
 
 msgid "Move one monitor left"
 msgstr "Mover un monitor a la izquierda"

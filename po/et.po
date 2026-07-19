@@ -129,20 +129,20 @@ msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Vajutage <b>BackSpace</b>, et tühistada kiirklahv."
 
 #. GSettings schema summaries
-msgid "Midscreen"
-msgstr "Ekraani keskel"
+msgid "Cycle midscreen sizes"
+msgstr "Vaheta ekraani keskel suurusi"
 
-msgid "Toggle left anchoring"
-msgstr "Lülita vasakule ankurdamine"
+msgid "Cycle left anchoring"
+msgstr "Vaheta vasakule ankurdamist"
 
-msgid "Toggle right anchoring"
-msgstr "Lülita paremale ankurdamine"
+msgid "Cycle right anchoring"
+msgstr "Vaheta paremale ankurdamist"
 
-msgid "Toggle top anchoring"
-msgstr "Lülita üles ankurdamine"
+msgid "Cycle top anchoring"
+msgstr "Vaheta üles ankurdamist"
 
-msgid "Toggle bottom anchoring"
-msgstr "Lülita alla ankurdamine"
+msgid "Cycle bottom anchoring"
+msgstr "Vaheta alla ankurdamist"
 
 msgid "Move one monitor left"
 msgstr "Liiguta üks ekraan vasakule"

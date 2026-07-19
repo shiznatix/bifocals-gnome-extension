@@ -9,6 +9,15 @@ import { BifocalAction } from './ext-action.js';
 
 const RESTORE_KEY = 'restore-window';
 
+// Shortcuts renamed in 5.0, as [old, new]
+const RENAMED_KEYS: [string, string][] = [
+	['midscreen', 'cycle-midscreen'],
+	['toggle-left', 'cycle-left'],
+	['toggle-right', 'cycle-right'],
+	['toggle-top', 'cycle-top'],
+	['toggle-bottom', 'cycle-bottom'],
+];
+
 export default class BifocalsExtension extends Extension {
 	#settings: Gio.Settings | null = null;
 	#boundKeys: string[] = []; // Only the keys actually added
@@ -16,24 +25,25 @@ export default class BifocalsExtension extends Extension {
 	#stateEnabledId: number | null = null;
 
 	enable() {
-		const settings = this.getSettings();
-		this.#settings = settings;
+		this.#settings = this.getSettings();
+		// Before the keybindings, so they bind the migrated values
+		this.#migrateRenamedKeys();
 
-		this.#syncStateEnabled(settings);
-		this.#stateEnabledId = settings.connect(
+		this.#syncStateEnabled();
+		this.#stateEnabledId = this.#settings.connect(
 			`changed::${RESTORE_KEY}`,
-			() => this.#syncStateEnabled(settings),
+			() => this.#syncStateEnabled(),
 		);
 
-		this.#addResizeKeybinding('midscreen', 'resize-midscreen',
+		this.#addResizeKeybinding('cycle-midscreen', 'resize-midscreen',
 			(fractions) => this.#action.midscreen(fractions));
-		this.#addResizeKeybinding('toggle-left', 'resize-left-right',
+		this.#addResizeKeybinding('cycle-left', 'resize-left-right',
 			(fractions) => this.#action.anchored('left', fractions));
-		this.#addResizeKeybinding('toggle-right', 'resize-left-right',
+		this.#addResizeKeybinding('cycle-right', 'resize-left-right',
 			(fractions) => this.#action.anchored('right', fractions));
-		this.#addResizeKeybinding('toggle-top', 'resize-top-bottom',
+		this.#addResizeKeybinding('cycle-top', 'resize-top-bottom',
 			(fractions) => this.#action.anchored('top', fractions));
-		this.#addResizeKeybinding('toggle-bottom', 'resize-top-bottom',
+		this.#addResizeKeybinding('cycle-bottom', 'resize-top-bottom',
 			(fractions) => this.#action.anchored('bottom', fractions));
 
 		this.#addKeybinding('move-monitor-left',
@@ -64,8 +74,28 @@ export default class BifocalsExtension extends Extension {
 		this.#settings = null;
 	}
 
-	#syncStateEnabled(settings: Gio.Settings) {
-		this.#action.setStateEnabled(settings.get_strv(RESTORE_KEY).length > 0);
+	#migrateRenamedKeys() {
+		if (!this.#settings) {
+			return;
+		}
+
+		for (const [from, to] of RENAMED_KEYS) {
+			const oldValue = this.#settings.get_user_value(from);
+
+			if (!oldValue) {
+				continue;
+			}
+
+			if (!this.#settings.get_user_value(to)) {
+				this.#settings.set_value(to, oldValue);
+				this.#settings.reset(from);
+			}
+		}
+	}
+
+	#syncStateEnabled() {
+		const len = this.#settings?.get_strv(RESTORE_KEY).length ?? 0;
+		this.#action.setStateEnabled(len > 0);
 	}
 
 	#getFractions(key: string): number[] {
