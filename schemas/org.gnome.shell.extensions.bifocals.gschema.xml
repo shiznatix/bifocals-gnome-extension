@@ -1,31 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist>
+<schemalist gettext-domain="bifocals@shiznatix">
 
   <schema id="org.gnome.shell.extensions.bifocals" path="/org/gnome/shell/extensions/bifocals/">
 
-    <key type="as" name="midscreen">
+    <key type="as" name="cycle-midscreen">
       <default><![CDATA[['<Super><Ctrl>c']]]></default>
-      <summary>Midscreen</summary>
+      <summary>Cycle midscreen sizes</summary>
     </key>
 
-    <key type="as" name="toggle-left">
+    <key type="as" name="cycle-left">
       <default><![CDATA[['<Super><Ctrl>Left']]]></default>
-      <summary>Toggle left anchoring</summary>
+      <summary>Cycle left anchoring</summary>
     </key>
 
-    <key type="as" name="toggle-right">
+    <key type="as" name="cycle-right">
       <default><![CDATA[['<Super><Ctrl>Right']]]></default>
-      <summary>Toggle right anchoring</summary>
+      <summary>Cycle right anchoring</summary>
     </key>
 
-    <key type="as" name="toggle-top">
+    <key type="as" name="cycle-top">
       <default><![CDATA[['<Super><Ctrl>Up']]]></default>
-      <summary>Toggle top anchoring</summary>
+      <summary>Cycle top anchoring</summary>
     </key>
 
-    <key type="as" name="toggle-bottom">
+    <key type="as" name="cycle-bottom">
       <default><![CDATA[['<Super><Ctrl>Down']]]></default>
-      <summary>Toggle bottom anchoring</summary>
+      <summary>Cycle bottom anchoring</summary>
+    </key>
+
+    <key type="as" name="move-monitor-left">
+      <default><![CDATA[['<Super><Ctrl>Home']]]></default>
+      <summary>Move one monitor left</summary>
+    </key>
+
+    <key type="as" name="move-monitor-right">
+      <default><![CDATA[['<Super><Ctrl>End']]]></default>
+      <summary>Move one monitor right</summary>
+    </key>
+
+    <key type="as" name="move-monitor-up">
+      <default><![CDATA[['<Super><Ctrl>Page_Up']]]></default>
+      <summary>Move one monitor up</summary>
+    </key>
+
+    <key type="as" name="move-monitor-down">
+      <default><![CDATA[['<Super><Ctrl>Page_Down']]]></default>
+      <summary>Move one monitor down</summary>
+    </key>
+
+    <key type="as" name="toggle-maximize">
+      <default><![CDATA[['<Super><Ctrl>Return']]]></default>
+      <summary>Toggle maximize</summary>
+    </key>
+
+    <key type="as" name="restore-window">
+      <default><![CDATA[['<Super><Ctrl>BackSpace']]]></default>
+      <summary>Restore to pre-Bifocals geometry</summary>
     </key>
 
     <key type="i" name="resize-left-right-small">
@@ -101,6 +131,28 @@
     <key type="b" name="resize-midscreen-large-enabled">
       <default>true</default>
       <summary>Midscreen large size enabled</summary>
+    </key>
+
+    <!--
+      Renamed to cycle-* in 5.0. Kept only so a user's old shortcut can be read
+      and cleared once, on the next enable. A key cannot be read or reset unless
+      the schema still declares it. No summary, so they stay out of translation.
+      Safe to drop once upgrades from 4.x are no longer a concern.
+    -->
+    <key type="as" name="midscreen">
+      <default><![CDATA[[]]]></default>
+    </key>
+    <key type="as" name="toggle-left">
+      <default><![CDATA[[]]]></default>
+    </key>
+    <key type="as" name="toggle-right">
+      <default><![CDATA[[]]]></default>
+    </key>
+    <key type="as" name="toggle-top">
+      <default><![CDATA[[]]]></default>
+    </key>
+    <key type="as" name="toggle-bottom">
+      <default><![CDATA[[]]]></default>
     </key>
 
   </schema>

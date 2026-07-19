@@ -6,11 +6,17 @@ import { ResizeGroup } from './prefs-resize-group.js';
 import { addResetAllGroup } from './prefs-reset-all.js';
 
 const shortcuts = [
-	'toggle-left',
-	'toggle-right',
-	'toggle-top',
-	'toggle-bottom',
-	'midscreen',
+	'cycle-left',
+	'cycle-right',
+	'cycle-top',
+	'cycle-bottom',
+	'cycle-midscreen',
+	'move-monitor-left',
+	'move-monitor-right',
+	'move-monitor-up',
+	'move-monitor-down',
+	'toggle-maximize',
+	'restore-window',
 ] as const;
 
 const resizeKeys = [
@@ -40,7 +46,7 @@ const _keybindingsDesc = () => _('Configure the extension keybindings');
 const _leftRightTitle = () => _('Left / Right Sizes');
 const _leftRightDesc = () => _('% of screen width');
 const _topBottomTitle = () => _('Top / Bottom Sizes');
-const _topButtonDesc = () => _('% of screen height')
+const _topBottomDesc = () => _('% of screen height');
 const _midscreenTitle = () => _('Midscreen Sizes');
 const _midscreenDesc = () => _('% of screen');
 
@@ -68,7 +74,7 @@ export default class BifocalsPrefs extends ExtensionPreferences {
 			settings,
 			keyPrefix: 'resize-top-bottom',
 			title: _topBottomTitle(),
-			description: _topButtonDesc(),
+			description: _topBottomDesc(),
 		}));
 		page.add(new ResizeGroup({
 			settings,

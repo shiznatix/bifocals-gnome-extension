@@ -127,3 +127,91 @@ msgstr "Drücke <b>ESC</b>, um den Dialog zu schließen."
 
 msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Drücke <b>BackSpace</b>, um das Tastenkürzel zu entfernen."
+
+#. GSettings schema summaries
+msgid "Cycle midscreen sizes"
+msgstr "Bildschirmmitte-Größen durchschalten"
+
+msgid "Cycle left anchoring"
+msgstr "Verankerung links durchschalten"
+
+msgid "Cycle right anchoring"
+msgstr "Verankerung rechts durchschalten"
+
+msgid "Cycle top anchoring"
+msgstr "Verankerung oben durchschalten"
+
+msgid "Cycle bottom anchoring"
+msgstr "Verankerung unten durchschalten"
+
+msgid "Move one monitor left"
+msgstr "Einen Monitor nach links verschieben"
+
+msgid "Move one monitor right"
+msgstr "Einen Monitor nach rechts verschieben"
+
+msgid "Move one monitor up"
+msgstr "Einen Monitor nach oben verschieben"
+
+msgid "Move one monitor down"
+msgstr "Einen Monitor nach unten verschieben"
+
+msgid "Toggle maximize"
+msgstr "Maximieren umschalten"
+
+msgid "Restore to pre-Bifocals geometry"
+msgstr "Auf Geometrie vor Bifocals zurücksetzen"
+
+msgid "Left / right small size"
+msgstr "Links / rechts kleine Größe"
+
+msgid "Left / right small size enabled"
+msgstr "Links / rechts kleine Größe aktiviert"
+
+msgid "Left / right medium size"
+msgstr "Links / rechts mittlere Größe"
+
+msgid "Left / right medium size enabled"
+msgstr "Links / rechts mittlere Größe aktiviert"
+
+msgid "Left / right large size"
+msgstr "Links / rechts große Größe"
+
+msgid "Left / right large size enabled"
+msgstr "Links / rechts große Größe aktiviert"
+
+msgid "Top / bottom small size"
+msgstr "Oben / unten kleine Größe"
+
+msgid "Top / bottom small size enabled"
+msgstr "Oben / unten kleine Größe aktiviert"
+
+msgid "Top / bottom medium size"
+msgstr "Oben / unten mittlere Größe"
+
+msgid "Top / bottom medium size enabled"
+msgstr "Oben / unten mittlere Größe aktiviert"
+
+msgid "Top / bottom large size"
+msgstr "Oben / unten große Größe"
+
+msgid "Top / bottom large size enabled"
+msgstr "Oben / unten große Größe aktiviert"
+
+msgid "Midscreen small size"
+msgstr "Bildschirmmitte kleine Größe"
+
+msgid "Midscreen small size enabled"
+msgstr "Bildschirmmitte kleine Größe aktiviert"
+
+msgid "Midscreen medium size"
+msgstr "Bildschirmmitte mittlere Größe"
+
+msgid "Midscreen medium size enabled"
+msgstr "Bildschirmmitte mittlere Größe aktiviert"
+
+msgid "Midscreen large size"
+msgstr "Bildschirmmitte große Größe"
+
+msgid "Midscreen large size enabled"
+msgstr "Bildschirmmitte große Größe aktiviert"

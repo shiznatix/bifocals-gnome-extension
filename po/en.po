@@ -127,3 +127,91 @@ msgstr "Press <b>ESC</b> to close the dialog."
 
 msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Press <b>BackSpace</b> to unset the keybinding."
+
+#. GSettings schema summaries
+msgid "Cycle midscreen sizes"
+msgstr "Cycle midscreen sizes"
+
+msgid "Cycle left anchoring"
+msgstr "Cycle left anchoring"
+
+msgid "Cycle right anchoring"
+msgstr "Cycle right anchoring"
+
+msgid "Cycle top anchoring"
+msgstr "Cycle top anchoring"
+
+msgid "Cycle bottom anchoring"
+msgstr "Cycle bottom anchoring"
+
+msgid "Move one monitor left"
+msgstr "Move one monitor left"
+
+msgid "Move one monitor right"
+msgstr "Move one monitor right"
+
+msgid "Move one monitor up"
+msgstr "Move one monitor up"
+
+msgid "Move one monitor down"
+msgstr "Move one monitor down"
+
+msgid "Toggle maximize"
+msgstr "Toggle maximize"
+
+msgid "Restore to pre-Bifocals geometry"
+msgstr "Restore to pre-Bifocals geometry"
+
+msgid "Left / right small size"
+msgstr "Left / right small size"
+
+msgid "Left / right small size enabled"
+msgstr "Left / right small size enabled"
+
+msgid "Left / right medium size"
+msgstr "Left / right medium size"
+
+msgid "Left / right medium size enabled"
+msgstr "Left / right medium size enabled"
+
+msgid "Left / right large size"
+msgstr "Left / right large size"
+
+msgid "Left / right large size enabled"
+msgstr "Left / right large size enabled"
+
+msgid "Top / bottom small size"
+msgstr "Top / bottom small size"
+
+msgid "Top / bottom small size enabled"
+msgstr "Top / bottom small size enabled"
+
+msgid "Top / bottom medium size"
+msgstr "Top / bottom medium size"
+
+msgid "Top / bottom medium size enabled"
+msgstr "Top / bottom medium size enabled"
+
+msgid "Top / bottom large size"
+msgstr "Top / bottom large size"
+
+msgid "Top / bottom large size enabled"
+msgstr "Top / bottom large size enabled"
+
+msgid "Midscreen small size"
+msgstr "Midscreen small size"
+
+msgid "Midscreen small size enabled"
+msgstr "Midscreen small size enabled"
+
+msgid "Midscreen medium size"
+msgstr "Midscreen medium size"
+
+msgid "Midscreen medium size enabled"
+msgstr "Midscreen medium size enabled"
+
+msgid "Midscreen large size"
+msgstr "Midscreen large size"
+
+msgid "Midscreen large size enabled"
+msgstr "Midscreen large size enabled"

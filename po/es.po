@@ -127,3 +127,91 @@ msgstr "Pulse <b>ESC</b> para cerrar el diálogo."
 
 msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Pulse <b>BackSpace</b> para eliminar el atajo de teclado."
+
+#. GSettings schema summaries
+msgid "Cycle midscreen sizes"
+msgstr "Rotar tamaños del centro de pantalla"
+
+msgid "Cycle left anchoring"
+msgstr "Rotar anclaje a la izquierda"
+
+msgid "Cycle right anchoring"
+msgstr "Rotar anclaje a la derecha"
+
+msgid "Cycle top anchoring"
+msgstr "Rotar anclaje arriba"
+
+msgid "Cycle bottom anchoring"
+msgstr "Rotar anclaje abajo"
+
+msgid "Move one monitor left"
+msgstr "Mover un monitor a la izquierda"
+
+msgid "Move one monitor right"
+msgstr "Mover un monitor a la derecha"
+
+msgid "Move one monitor up"
+msgstr "Mover un monitor arriba"
+
+msgid "Move one monitor down"
+msgstr "Mover un monitor abajo"
+
+msgid "Toggle maximize"
+msgstr "Alternar maximizar"
+
+msgid "Restore to pre-Bifocals geometry"
+msgstr "Restaurar a la geometría previa a Bifocals"
+
+msgid "Left / right small size"
+msgstr "Tamaño pequeño izquierda / derecha"
+
+msgid "Left / right small size enabled"
+msgstr "Tamaño pequeño izquierda / derecha activado"
+
+msgid "Left / right medium size"
+msgstr "Tamaño mediano izquierda / derecha"
+
+msgid "Left / right medium size enabled"
+msgstr "Tamaño mediano izquierda / derecha activado"
+
+msgid "Left / right large size"
+msgstr "Tamaño grande izquierda / derecha"
+
+msgid "Left / right large size enabled"
+msgstr "Tamaño grande izquierda / derecha activado"
+
+msgid "Top / bottom small size"
+msgstr "Tamaño pequeño superior / inferior"
+
+msgid "Top / bottom small size enabled"
+msgstr "Tamaño pequeño superior / inferior activado"
+
+msgid "Top / bottom medium size"
+msgstr "Tamaño mediano superior / inferior"
+
+msgid "Top / bottom medium size enabled"
+msgstr "Tamaño mediano superior / inferior activado"
+
+msgid "Top / bottom large size"
+msgstr "Tamaño grande superior / inferior"
+
+msgid "Top / bottom large size enabled"
+msgstr "Tamaño grande superior / inferior activado"
+
+msgid "Midscreen small size"
+msgstr "Tamaño pequeño centro de pantalla"
+
+msgid "Midscreen small size enabled"
+msgstr "Tamaño pequeño centro de pantalla activado"
+
+msgid "Midscreen medium size"
+msgstr "Tamaño mediano centro de pantalla"
+
+msgid "Midscreen medium size enabled"
+msgstr "Tamaño mediano centro de pantalla activado"
+
+msgid "Midscreen large size"
+msgstr "Tamaño grande centro de pantalla"
+
+msgid "Midscreen large size enabled"
+msgstr "Tamaño grande centro de pantalla activado"

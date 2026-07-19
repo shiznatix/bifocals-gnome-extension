@@ -127,3 +127,91 @@ msgstr "Tryck <b>ESC</b> för att stänga dialogen."
 
 msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Tryck <b>BackSpace</b> för att ta bort tangentbindningen."
+
+#. GSettings schema summaries
+msgid "Cycle midscreen sizes"
+msgstr "Växla storlekar för mitten av skärm"
+
+msgid "Cycle left anchoring"
+msgstr "Växla förankring till vänster"
+
+msgid "Cycle right anchoring"
+msgstr "Växla förankring till höger"
+
+msgid "Cycle top anchoring"
+msgstr "Växla förankring uppåt"
+
+msgid "Cycle bottom anchoring"
+msgstr "Växla förankring nedåt"
+
+msgid "Move one monitor left"
+msgstr "Flytta en skärm åt vänster"
+
+msgid "Move one monitor right"
+msgstr "Flytta en skärm åt höger"
+
+msgid "Move one monitor up"
+msgstr "Flytta en skärm uppåt"
+
+msgid "Move one monitor down"
+msgstr "Flytta en skärm nedåt"
+
+msgid "Toggle maximize"
+msgstr "Växla maximera"
+
+msgid "Restore to pre-Bifocals geometry"
+msgstr "Återställ till geometrin före Bifocals"
+
+msgid "Left / right small size"
+msgstr "Vänster / höger liten storlek"
+
+msgid "Left / right small size enabled"
+msgstr "Vänster / höger liten storlek aktiverad"
+
+msgid "Left / right medium size"
+msgstr "Vänster / höger medelstor storlek"
+
+msgid "Left / right medium size enabled"
+msgstr "Vänster / höger medelstor storlek aktiverad"
+
+msgid "Left / right large size"
+msgstr "Vänster / höger stor storlek"
+
+msgid "Left / right large size enabled"
+msgstr "Vänster / höger stor storlek aktiverad"
+
+msgid "Top / bottom small size"
+msgstr "Övre / nedre liten storlek"
+
+msgid "Top / bottom small size enabled"
+msgstr "Övre / nedre liten storlek aktiverad"
+
+msgid "Top / bottom medium size"
+msgstr "Övre / nedre medelstor storlek"
+
+msgid "Top / bottom medium size enabled"
+msgstr "Övre / nedre medelstor storlek aktiverad"
+
+msgid "Top / bottom large size"
+msgstr "Övre / nedre stor storlek"
+
+msgid "Top / bottom large size enabled"
+msgstr "Övre / nedre stor storlek aktiverad"
+
+msgid "Midscreen small size"
+msgstr "Mitten av skärm liten storlek"
+
+msgid "Midscreen small size enabled"
+msgstr "Mitten av skärm liten storlek aktiverad"
+
+msgid "Midscreen medium size"
+msgstr "Mitten av skärm medelstor storlek"
+
+msgid "Midscreen medium size enabled"
+msgstr "Mitten av skärm medelstor storlek aktiverad"
+
+msgid "Midscreen large size"
+msgstr "Mitten av skärm stor storlek"
+
+msgid "Midscreen large size enabled"
+msgstr "Mitten av skärm stor storlek aktiverad"
