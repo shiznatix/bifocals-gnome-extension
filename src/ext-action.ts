@@ -69,14 +69,13 @@ export class BifocalAction {
 
 	toggleMaximize() {
 		const window = BifocalWindow.focused();
-
-		this.#stateMngr?.remember(window);
-		if (window.isMaximized) {
-			window.unmaximize();
-		} else {
-			window.maximize();
-		}
-		this.#stateMngr?.save(window, window.workArea);
+		this.#apply(window, () => {
+			if (window.isMaximized) {
+				window.unmaximize();
+			} else {
+				window.maximize();
+			}
+		});
 	}
 
 	restore() {
@@ -88,10 +87,15 @@ export class BifocalAction {
 		this.#stateMngr = null;
 	}
 
-	#apply(window: BifocalWindow, dimens: RectangleDimensions) {
+	#apply(window: BifocalWindow, dimens: RectangleDimensions | (() => void)) {
 		this.#stateMngr?.remember(window);
-		window.unmaximize();
-		window.moveTo(dimens);
+		if (typeof dimens === 'function') {
+			dimens();
+			dimens = window.workArea;
+		} else {
+			window.unmaximize();
+			window.moveTo(dimens);
+		}
 		this.#stateMngr?.save(window, dimens);
 	}
 

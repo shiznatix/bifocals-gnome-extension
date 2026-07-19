@@ -129,20 +129,20 @@ msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Premere <b>BackSpace</b> per rimuovere la scorciatoia da tastiera."
 
 #. GSettings schema summaries
-msgid "Midscreen"
-msgstr "Centro schermo"
+msgid "Cycle midscreen sizes"
+msgstr "Scorri dimensioni centro schermo"
 
-msgid "Toggle left anchoring"
-msgstr "Attiva/disattiva ancoraggio a sinistra"
+msgid "Cycle left anchoring"
+msgstr "Scorri ancoraggio a sinistra"
 
-msgid "Toggle right anchoring"
-msgstr "Attiva/disattiva ancoraggio a destra"
+msgid "Cycle right anchoring"
+msgstr "Scorri ancoraggio a destra"
 
-msgid "Toggle top anchoring"
-msgstr "Attiva/disattiva ancoraggio in alto"
+msgid "Cycle top anchoring"
+msgstr "Scorri ancoraggio in alto"
 
-msgid "Toggle bottom anchoring"
-msgstr "Attiva/disattiva ancoraggio in basso"
+msgid "Cycle bottom anchoring"
+msgstr "Scorri ancoraggio in basso"
 
 msgid "Move one monitor left"
 msgstr "Sposta di un monitor a sinistra"

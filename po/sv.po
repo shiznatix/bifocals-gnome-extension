@@ -129,19 +129,19 @@ msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Tryck <b>BackSpace</b> för att ta bort tangentbindningen."
 
 #. GSettings schema summaries
-msgid "Midscreen"
-msgstr "Mitten av skärm"
+msgid "Cycle midscreen sizes"
+msgstr "Växla storlekar för mitten av skärm"
 
-msgid "Toggle left anchoring"
+msgid "Cycle left anchoring"
 msgstr "Växla förankring till vänster"
 
-msgid "Toggle right anchoring"
+msgid "Cycle right anchoring"
 msgstr "Växla förankring till höger"
 
-msgid "Toggle top anchoring"
+msgid "Cycle top anchoring"
 msgstr "Växla förankring uppåt"
 
-msgid "Toggle bottom anchoring"
+msgid "Cycle bottom anchoring"
 msgstr "Växla förankring nedåt"
 
 msgid "Move one monitor left"

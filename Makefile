@@ -1,19 +1,21 @@
-ifneq (,$(filter dev,$(MAKECMDGOALS)))
-DEV := 1
-endif
-export DEV
+# Stop on the first failure, including partway through a multi-command recipe or
+# a pipeline, where the default `sh` would carry on and report the exit status of
+# the last command only.
+SHELL := /bin/bash
+.SHELLFLAGS := -eu -o pipefail -c
+.DELETE_ON_ERROR:
 
-META_SELECT := $(if $(DEV),(.default + .dev),.default)
-ZIP := dist/bifocals$(if $(DEV),-dev).zip
-UUID := $(shell jq -r '$(META_SELECT).uuid' metadata.tmpl.json)
+# `$(shell)` swallows failures, so a missing or malformed metadata.json would
+# leave UUID empty and silently name the locale files ".mo".
+UUID := $(shell jq -r '.uuid' metadata.json 2>/dev/null)
+ifeq (,$(filter-out null,$(UUID)))
+$(error Cannot read .uuid from metadata.json)
+endif
 
 .DEFAULT_GOAL := build
 MAKEFLAGS += --no-print-directory
-.PHONY: all dev lint-ts lint-zip tsc metadata locale build package install \
-        clean clean-all help
-
-dev:
-	@:
+.PHONY: all deps lint-ts lint-zip tsc metadata locale build package install \
+        clean help
 
 deps:
 	npm i
@@ -21,7 +23,7 @@ deps:
 	uv sync
 
 tsc:
-	node_modules/.bin/tsc --outDir build
+	node_modules/.bin/tsc
 
 lint-ts:
 	node_modules/.bin/eslint src
@@ -29,22 +31,22 @@ lint-ts:
 # shexli always exits 0, even when it reports findings, so the status has to be
 # read back out of its JSON to fail the build.
 lint-zip:
-	.venv/bin/shexli $(ZIP)
-	@.venv/bin/shexli --format json $(ZIP) \
+	.venv/bin/shexli bifocals.zip
+	@.venv/bin/shexli --format json bifocals.zip \
 	    | jq -e '.summary.status == "clean"' > /dev/null \
 	    || { echo "lint-zip: shexli reported findings (see above)"; exit 1; }
 
 metadata:
 	@mkdir -p build
 	jq --rawfile desc description.txt \
-	    '($(META_SELECT)) + { description: ($$desc | gsub("^\\s+|\\s+$$"; "")) }' \
-	    metadata.tmpl.json > build/metadata.json
+	    '. + { description: ($$desc | gsub("^\\s+|\\s+$$"; "")) }' \
+	    metadata.json > build/metadata.json
 
 locale:
 	rm -rf build/locale
 	while read -r lang; do \
 	    mkdir -p build/locale/$$lang/LC_MESSAGES; \
-	    msgfmt po/$$lang.po -o build/locale/$$lang/LC_MESSAGES/$(UUID).mo || exit 1; \
+	    msgfmt po/$$lang.po -o build/locale/$$lang/LC_MESSAGES/$(UUID).mo; \
 	done < po/LINGUAS
 
 build: clean
@@ -54,14 +56,13 @@ build: clean
 	@echo "Built $(UUID) to build"
 
 package:
-	mkdir -p dist
-	rm -f $(ZIP)
-	cd build && zip -qr ../$(ZIP) .
+	rm -f bifocals.zip
+	cd build && zip -qr ../bifocals.zip .
 	@$(MAKE) lint-zip
-	@echo "Packaged $(UUID) to $(ZIP)"
+	@echo "Packaged $(UUID) to bifocals.zip"
 
 install:
-	gnome-extensions install --force $(ZIP)
+	gnome-extensions install --force bifocals.zip
 	@echo "Installed $(UUID). Log out and back in to load it."
 
 
@@ -69,19 +70,14 @@ all:
 	@$(MAKE) build package install
 
 clean:
-	rm -rf build $(ZIP)
-
-clean-all:
-	rm -rf build dist
+	rm -rf build bifocals.zip
 
 help:
 	@echo "Targets:"
-	@echo "  dev        flag all following goals as DEV"
 	@echo "  build      lint, compile and assemble build/   [default]"
-	@echo "  package    zip the build to $(ZIP)"
-	@echo "  install    install $(ZIP) into GNOME"
+	@echo "  package    zip the build to bifocals.zip"
+	@echo "  install    install bifocals.zip into GNOME"
 	@echo "  all        build, then package, then install"
 	@echo "  lint-ts    eslint the TypeScript sources"
 	@echo "  lint-zip   shexli the packaged zip"
-	@echo "  clean      remove build/ and $(ZIP)"
-	@echo "  clean-all  remove build/ and dist/ entirely"
+	@echo "  clean      remove build/ and bifocals.zip"

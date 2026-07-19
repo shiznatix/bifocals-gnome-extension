@@ -13,11 +13,11 @@ All shortcuts can be modified in the preferences. See `gnome-tweaks` or `extensi
 
 | Name | Description | Default Keybinding |
 | ---- | ----------- | ------------------ |
-| `toggle-left` | Toggle size while anchored to the left. Cycles through up to 3 configurable widths (default: 33%, 50%, 67% of screen width). The window is stretched to the full screen height. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Left |
-| `toggle-right` | Toggle size while anchored to the right. Cycles through up to 3 configurable widths (default: 33%, 50%, 67% of screen width). The window is stretched to the full screen height. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Right |
-| `toggle-top` | Toggle height while anchored to the top. Cycles through up to 3 configurable heights (default: 33%, 50%, 67% of screen height). The window's horizontal position and width are preserved. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Up |
-| `toggle-bottom` | Toggle height while anchored to the bottom. Cycles through up to 3 configurable heights (default: 33%, 50%, 67% of screen height). The window's horizontal position and width are preserved. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Down |
-| `midscreen` | Move the window to the centre of the screen. Cycles through up to 3 configurable sizes (default: 20%, 25%, 33% of each screen axis). Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+c |
+| `cycle-left` | Cycle the window's width while anchored to the left. Cycles through up to 3 configurable widths (default: 33%, 50%, 67% of screen width). The window is stretched to the full screen height. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Left |
+| `cycle-right` | Cycle the window's width while anchored to the right. Cycles through up to 3 configurable widths (default: 33%, 50%, 67% of screen width). The window is stretched to the full screen height. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Right |
+| `cycle-top` | Cycle the window's height while anchored to the top. Cycles through up to 3 configurable heights (default: 33%, 50%, 67% of screen height). The window's horizontal position and width are preserved. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Up |
+| `cycle-bottom` | Cycle the window's height while anchored to the bottom. Cycles through up to 3 configurable heights (default: 33%, 50%, 67% of screen height). The window's horizontal position and width are preserved. Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+Down |
+| `cycle-midscreen` | Move the window to the centre of the screen. Cycles through up to 3 configurable sizes (default: 20%, 25%, 33% of each screen axis). Individual sizes can be disabled. | &lt;Super&gt;+&lt;Ctrl&gt;+c |
 | `move-monitor-left` | Move the window to the monitor to the left, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+Home |
 | `move-monitor-right` | Move the window to the monitor to the right, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+End |
 | `move-monitor-up` | Move the window to the monitor above, scaling it to keep the same relative size and position on the new monitor. No-op if there is no monitor in that direction. | &lt;Super&gt;+&lt;Ctrl&gt;+Page&nbsp;Up |
@@ -29,12 +29,12 @@ All shortcuts can be modified in the preferences. See `gnome-tweaks` or `extensi
 # Restoring windows
 `restore-window` puts a window back where it was **before the current run of Bifocals actions**, not merely one step back.
 
-Bifocals remembers a window's geometry the first time an action moves it, and keeps that same baseline through any number of consecutive actions. So cycling `toggle-left` through all three of its sizes and then restoring returns the window to where it started, not to the previous size step.
+Bifocals remembers a window's geometry the first time an action moves it, and keeps that same baseline through any number of consecutive actions. So cycling `cycle-left` through all three of its widths and then restoring returns the window to where it started, not to the previous size step.
 
 If you move or resize a window yourself in between, that new geometry becomes the baseline instead:
 
 1. Drag a window somewhere and size it how you like — call that **A**.
-2. `toggle-left`, then `toggle-left` again to cycle its width.
+2. `cycle-left`, then `cycle-left` again to cycle its width.
 3. `restore-window` puts the window back at **A**.
 4. Now drag it somewhere else, to **B**. The next `restore-window` targets **B**.
 

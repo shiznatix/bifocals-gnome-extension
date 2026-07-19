@@ -14,4 +14,4 @@ Maximize
 
 Restore
 * Restore a window to the size and position it had before any Bifocals commands.
-* Windows you have never touched fall back to the last restore point of another window of the same application.
+* New windows default restore value is last saved restore for any window of the same application.

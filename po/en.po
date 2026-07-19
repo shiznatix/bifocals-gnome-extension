@@ -129,20 +129,20 @@ msgid "Press <b>BackSpace</b> to unset the keybinding."
 msgstr "Press <b>BackSpace</b> to unset the keybinding."
 
 #. GSettings schema summaries
-msgid "Midscreen"
-msgstr "Midscreen"
+msgid "Cycle midscreen sizes"
+msgstr "Cycle midscreen sizes"
 
-msgid "Toggle left anchoring"
-msgstr "Toggle left anchoring"
+msgid "Cycle left anchoring"
+msgstr "Cycle left anchoring"
 
-msgid "Toggle right anchoring"
-msgstr "Toggle right anchoring"
+msgid "Cycle right anchoring"
+msgstr "Cycle right anchoring"
 
-msgid "Toggle top anchoring"
-msgstr "Toggle top anchoring"
+msgid "Cycle top anchoring"
+msgstr "Cycle top anchoring"
 
-msgid "Toggle bottom anchoring"
-msgstr "Toggle bottom anchoring"
+msgid "Cycle bottom anchoring"
+msgstr "Cycle bottom anchoring"
 
 msgid "Move one monitor left"
 msgstr "Move one monitor left"

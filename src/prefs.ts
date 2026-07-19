@@ -6,11 +6,11 @@ import { ResizeGroup } from './prefs-resize-group.js';
 import { addResetAllGroup } from './prefs-reset-all.js';
 
 const shortcuts = [
-	'toggle-left',
-	'toggle-right',
-	'toggle-top',
-	'toggle-bottom',
-	'midscreen',
+	'cycle-left',
+	'cycle-right',
+	'cycle-top',
+	'cycle-bottom',
+	'cycle-midscreen',
 	'move-monitor-left',
 	'move-monitor-right',
 	'move-monitor-up',
