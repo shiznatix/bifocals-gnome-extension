@@ -48,7 +48,6 @@ export class BifocalAction {
 		if (anchor === 'right') {
 			dimensions.x = workArea.x + workArea.w - value;
 		} else if (anchor === 'top') {
-			// Vertical anchors spread `rect`, which carries the window's own y
 			dimensions.y = workArea.y;
 		} else if (anchor === 'bottom') {
 			dimensions.y = workArea.y + workArea.h - value;
@@ -69,13 +68,17 @@ export class BifocalAction {
 
 	toggleMaximize() {
 		const window = BifocalWindow.focused();
-		this.#apply(window, () => {
-			if (window.isMaximized) {
-				window.unmaximize();
-			} else {
-				window.maximize();
-			}
-		});
+		this.#stateMngr?.remember(window);
+
+		if (window.isMaximized) {
+			window.unmaximize();
+		} else {
+			window.maximize();
+		}
+
+		// Unlike a move, the shell picks the geometry here, so record what the
+		// window actually got rather than what was asked for
+		this.#stateMngr?.save(window, window.rect);
 	}
 
 	restore() {
@@ -87,15 +90,10 @@ export class BifocalAction {
 		this.#stateMngr = null;
 	}
 
-	#apply(window: BifocalWindow, dimens: RectangleDimensions | (() => void)) {
+	#apply(window: BifocalWindow, dimens: RectangleDimensions) {
 		this.#stateMngr?.remember(window);
-		if (typeof dimens === 'function') {
-			dimens();
-			dimens = window.workArea;
-		} else {
-			window.unmaximize();
-			window.moveTo(dimens);
-		}
+		window.unmaximize();
+		window.moveTo(dimens);
 		this.#stateMngr?.save(window, dimens);
 	}
 
@@ -105,13 +103,15 @@ export class BifocalAction {
 		}
 
 		const wasMaximized = window.isMaximized;
+		const dimens = this.#stateMngr?.getPrevious(window, wasMaximized);
+		if (!dimens) {
+			return;
+		}
+
 		if (wasMaximized) {
 			window.unmaximize();
 		}
 
-		const dimens = this.#stateMngr?.getPrevious(window, wasMaximized);
-		if (dimens) {
-			window.moveTo(dimens);
-		}
+		window.moveTo(dimens);
 	}
 }

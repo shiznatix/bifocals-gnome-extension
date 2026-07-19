@@ -40,7 +40,7 @@ const resizeKeys = [
 	'resize-midscreen-large-enabled',
 ] as const;
 
-const _title = () => _('Bifocal Preferences');
+const _title = () => _('Bifocals Preferences');
 const _keybindingsTitle = () => _('Keybindings');
 const _keybindingsDesc = () => _('Configure the extension keybindings');
 const _leftRightTitle = () => _('Left / Right Sizes');

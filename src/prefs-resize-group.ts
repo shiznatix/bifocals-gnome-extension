@@ -57,20 +57,26 @@ const ResizeRow = GObject.registerClass({
 
 		this.activatable_widget = this.#toggle;
 
-		this.#settings.connect(`changed::${this.#key}`, () => {
-			const customized = this.#isCustomized();
-			this.#resetBtn.opacity = customized ? 1 : 0;
-			this.#resetBtn.sensitive = customized && this.#settings.get_boolean(this.#enabledKey);
-			if (this.#adjustment.value !== this.#settings.get_int(this.#key)) {
-				this.#adjustment.value = this.#settings.get_int(this.#key);
+		const handlerIds = [
+			this.#settings.connect(`changed::${this.#key}`, () => {
+				const customized = this.#isCustomized();
+				this.#resetBtn.opacity = customized ? 1 : 0;
+				this.#resetBtn.sensitive = customized && this.#settings.get_boolean(this.#enabledKey);
+				if (this.#adjustment.value !== this.#settings.get_int(this.#key)) {
+					this.#adjustment.value = this.#settings.get_int(this.#key);
+				}
+			}),
+			this.#settings.connect(`changed::${this.#enabledKey}`, () => {
+				if (this.#toggle.active !== this.#settings.get_boolean(this.#enabledKey)) {
+					this.#toggle.active = this.#settings.get_boolean(this.#enabledKey);
+				}
+				this.#updateSensitivity();
+			}),
+		];
+		this.connect('destroy', () => {
+			for (const id of handlerIds) {
+				this.#settings.disconnect(id);
 			}
-		});
-
-		this.#settings.connect(`changed::${this.#enabledKey}`, () => {
-			if (this.#toggle.active !== this.#settings.get_boolean(this.#enabledKey)) {
-				this.#toggle.active = this.#settings.get_boolean(this.#enabledKey);
-			}
-			this.#updateSensitivity();
 		});
 
 		this.add_suffix(this.#spinButton);
@@ -184,10 +190,19 @@ export const ResizeGroup = GObject.registerClass({
 
 		[{ row: this.#smallRow }, { row: this.#mediumRow }, { row: this.#largeRow }] = rowData;
 
+		const handlerIds: number[] = [];
 		for (const { row, suffix } of rowData) {
 			row.onValueChanged(() => this.#validate());
-			settings.connect(`changed::${keyPrefix}-${suffix}-enabled`, () => this.#validate());
+			handlerIds.push(
+				settings.connect(`changed::${keyPrefix}-${suffix}-enabled`, () => this.#validate()),
+			);
 		}
+		this.connect('destroy', () => {
+			for (const id of handlerIds) {
+				settings.disconnect(id);
+			}
+		});
+
 		this.#validate();
 	}
 
