@@ -8,17 +8,17 @@
   </defs>
   <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#g)"/>
   <g clip-path="url(#frame)">
-    <g transform="translate(64 64) scale(1.15) translate(-64 -64)">
-      <g fill="none" stroke="#14303a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(64 64) scale(1.45) translate(-64 -64)">
+      <g fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 47 L7 41"/>
         <path d="M110 47 L121 41"/>
         <path d="M56 52 Q64 44 72 52"/>
       </g>
-      <g fill="#14303a">
+      <g fill="#ffffff">
         <rect x="16" y="44" width="40" height="40" rx="9"/>
         <rect x="72" y="44" width="40" height="40" rx="9"/>
       </g>
-      <g fill="#d9f6ef">
+      <g fill="#0b6e66">
         <rect x="21" y="49" width="13" height="30" rx="3"/>
         <rect x="77" y="49" width="30" height="12" rx="3"/>
       </g>
