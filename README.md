@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="icon/icon-128.png" width="120" alt="Bifocals icon">
+</p>
+
 # bifocals-gnome-extension
 Gnome extension adding more window management keyboard shortcuts
 
