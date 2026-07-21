@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 .DEFAULT_GOAL := build
 MAKEFLAGS += --no-print-directory
-.PHONY: all deps lint-ts lint-zip tsc metadata locale build package install \
+.PHONY: all deps lint-ts lint-zip tsc metadata locale icons build package install \
         clean help
 
 deps:
@@ -40,6 +40,13 @@ locale:
 	    msgfmt po/$$lang.po -o build/locale/$$lang/LC_MESSAGES/bifocals@shiznatix.mo; \
 	done < po/LINGUAS
 
+# Rasterises icon/icon.svg to the committed icon/icon-*.png sizes. Not part of the
+# build; run it after editing icon.svg. uv pulls cairosvg into an ephemeral env, so
+# nothing is added to the project venv.
+icons:
+	uv run --with cairosvg python -c "import cairosvg; [cairosvg.svg2png(url='icon/icon.svg', write_to='icon/icon-%d.png' % s, output_width=s, output_height=s) for s in (16, 32, 48, 64, 128, 256)]"
+	@echo "icons: wrote icon/icon-{16,32,48,64,128,256}.png"
+
 build: clean
 	mkdir -p build
 	@$(MAKE) -j lint-ts tsc metadata locale
@@ -70,4 +77,5 @@ help:
 	@echo "  all        build, then package, then install"
 	@echo "  lint-ts    eslint the TypeScript sources"
 	@echo "  lint-zip   shexli the packaged zip"
+	@echo "  icons      re-render icon/icon-*.png from icon.svg"
 	@echo "  clean      remove build/ and bifocals.zip"
