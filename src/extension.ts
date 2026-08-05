@@ -20,43 +20,46 @@ const RENAMED_KEYS: [string, string][] = [
 
 export default class BifocalsExtension extends Extension {
 	#settings: Gio.Settings | null = null;
+	#action: BifocalAction | null = null;
 	#boundKeys: string[] = []; // Only the keys actually added
-	#action: BifocalAction = new BifocalAction();
-	#stateEnabledId: number | null = null;
 
 	enable() {
-		this.#settings = this.getSettings();
-		// Before the keybindings, so they bind the migrated values
-		this.#migrateRenamedKeys();
+		const settings = this.getSettings();
+		const action = new BifocalAction();
+		this.#settings = settings;
+		this.#action = action;
 
-		this.#syncStateEnabled();
-		this.#stateEnabledId = this.#settings.connect(
+		// Before the keybindings, so they bind the migrated values
+		this.#migrateRenamedKeys(settings);
+		this.#syncStateEnabled(settings, action);
+		settings.connectObject(
 			`changed::${RESTORE_KEY}`,
-			() => this.#syncStateEnabled(),
+			() => this.#syncStateEnabled(settings, action),
+			this,
 		);
 
-		this.#addResizeKeybinding('cycle-midscreen', 'resize-midscreen',
-			(fractions) => this.#action.midscreen(fractions));
-		this.#addResizeKeybinding('cycle-left', 'resize-left-right',
-			(fractions) => this.#action.anchored('left', fractions));
-		this.#addResizeKeybinding('cycle-right', 'resize-left-right',
-			(fractions) => this.#action.anchored('right', fractions));
-		this.#addResizeKeybinding('cycle-top', 'resize-top-bottom',
-			(fractions) => this.#action.anchored('top', fractions));
-		this.#addResizeKeybinding('cycle-bottom', 'resize-top-bottom',
-			(fractions) => this.#action.anchored('bottom', fractions));
+		this.#addResizeKeybinding(settings, 'cycle-midscreen', 'resize-midscreen',
+			(fractions) => action.midscreen(fractions));
+		this.#addResizeKeybinding(settings, 'cycle-left', 'resize-left-right',
+			(fractions) => action.anchored('left', fractions));
+		this.#addResizeKeybinding(settings, 'cycle-right', 'resize-left-right',
+			(fractions) => action.anchored('right', fractions));
+		this.#addResizeKeybinding(settings, 'cycle-top', 'resize-top-bottom',
+			(fractions) => action.anchored('top', fractions));
+		this.#addResizeKeybinding(settings, 'cycle-bottom', 'resize-top-bottom',
+			(fractions) => action.anchored('bottom', fractions));
 
-		this.#addKeybinding('move-monitor-left',
-			() => this.#action.moveToMonitor(Meta.DisplayDirection.LEFT));
-		this.#addKeybinding('move-monitor-right',
-			() => this.#action.moveToMonitor(Meta.DisplayDirection.RIGHT));
-		this.#addKeybinding('move-monitor-up',
-			() => this.#action.moveToMonitor(Meta.DisplayDirection.UP));
-		this.#addKeybinding('move-monitor-down',
-			() => this.#action.moveToMonitor(Meta.DisplayDirection.DOWN));
+		this.#addKeybinding(settings, 'move-monitor-left',
+			() => action.moveToMonitor(Meta.DisplayDirection.LEFT));
+		this.#addKeybinding(settings, 'move-monitor-right',
+			() => action.moveToMonitor(Meta.DisplayDirection.RIGHT));
+		this.#addKeybinding(settings, 'move-monitor-up',
+			() => action.moveToMonitor(Meta.DisplayDirection.UP));
+		this.#addKeybinding(settings, 'move-monitor-down',
+			() => action.moveToMonitor(Meta.DisplayDirection.DOWN));
 
-		this.#addKeybinding('toggle-maximize', () => this.#action.toggleMaximize());
-		this.#addKeybinding('restore-window', () => this.#action.restore());
+		this.#addKeybinding(settings, 'toggle-maximize', () => action.toggleMaximize());
+		this.#addKeybinding(settings, 'restore-window', () => action.restore());
 	}
 
 	disable() {
@@ -65,53 +68,48 @@ export default class BifocalsExtension extends Extension {
 		}
 		this.#boundKeys.length = 0;
 
-		if (this.#stateEnabledId !== null) {
-			this.#settings?.disconnect(this.#stateEnabledId);
-			this.#stateEnabledId = null;
-		}
+		// Drop the pending settle timeouts before
+		// the signal and the objects go
+		this.#action?.destroy();
+		this.#action = null;
 
-		this.#action.destroy();
+		this.#settings?.disconnectObject(this);
 		this.#settings = null;
 	}
 
-	#migrateRenamedKeys() {
-		if (!this.#settings) {
-			return;
-		}
-
+	#migrateRenamedKeys(settings: Gio.Settings) {
 		for (const [from, to] of RENAMED_KEYS) {
-			const oldValue = this.#settings.get_user_value(from);
+			const oldValue = settings.get_user_value(from);
 
 			if (!oldValue) {
 				continue;
 			}
 
-			if (!this.#settings.get_user_value(to)) {
-				this.#settings.set_value(to, oldValue);
-				this.#settings.reset(from);
+			if (!settings.get_user_value(to)) {
+				settings.set_value(to, oldValue);
+				settings.reset(from);
 			}
 		}
 	}
 
-	#syncStateEnabled() {
-		const len = this.#settings?.get_strv(RESTORE_KEY).length ?? 0;
-		this.#action.setStateEnabled(len > 0);
+	#syncStateEnabled(settings: Gio.Settings, action: BifocalAction) {
+		action.setStateEnabled(settings.get_strv(RESTORE_KEY).length > 0);
 	}
 
-	#getFractions(key: string): number[] {
-		const settings = this.#settings;
-		if (!settings) {
-			return [];
-		}
-
+	#getFractions(settings: Gio.Settings, key: string): number[] {
 		return (['small', 'medium', 'large'] as const)
 			.filter((size) => settings.get_boolean(`${key}-${size}-enabled`))
 			.map((size) => settings.get_int(`${key}-${size}`) / 100);
 	}
 
-	#addResizeKeybinding(name: string, fractionKey: string, action: (fractions: number[]) => void) {
-		this.#addKeybinding(name, () => {
-			const fractions = this.#getFractions(fractionKey);
+	#addResizeKeybinding(
+		settings: Gio.Settings,
+		name: string,
+		fractionKey: string,
+		action: (fractions: number[]) => void,
+	) {
+		this.#addKeybinding(settings, name, () => {
+			const fractions = this.#getFractions(settings, fractionKey);
 			if (!fractions.length) {
 				return;
 			}
@@ -120,22 +118,18 @@ export default class BifocalsExtension extends Extension {
 		});
 	}
 
-	#addKeybinding(name: string, handler: () => void) {
-		if (!this.#settings) {
-			printerr('Cannot bind key, `settings` is not initialized');
-			return;
-		}
-
+	#addKeybinding(settings: Gio.Settings, name: string, handler: () => void) {
 		Main.wm.addKeybinding(
 			name,
-			this.#settings,
+			settings,
 			Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
 			Shell.ActionMode.NORMAL,
 			() => {
 				try {
 					return handler();
 				} catch (error) {
-					printerr(`Keybinding ${name} callback error`, error);
+					// `BifocalWindow.focused()` throws when nothing is focused
+					console.error(`Keybinding ${name} callback error`, error);
 				}
 			},
 		);

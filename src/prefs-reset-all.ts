@@ -46,12 +46,9 @@ export function addResetAllGroup(
 	};
 	updateSensitivity();
 
-	const handlerIds = keys.map((k) => settings.connect(`changed::${k}`, updateSensitivity));
-	resetAllBtn.connect('destroy', () => {
-		for (const id of handlerIds) {
-			settings.disconnect(id);
-		}
-	});
+	for (const key of keys) {
+		settings.connect(`changed::${key}`, updateSensitivity);
+	}
 
 	resetAllBtn.connect('clicked', () => {
 		const dialog = new Adw.AlertDialog({
