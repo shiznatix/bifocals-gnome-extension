@@ -88,12 +88,11 @@ export const ShortcutRow = GObject.registerClass({
 		this.connect('activated', this.#onRebindKey.bind(this));
 		resetBtn.connect('clicked', () => this.#settings.reset(this.#schemaKey));
 
-		const handlerId = this.#settings.connect(`changed::${schemaKey}`, () => {
+		this.#settings.connect(`changed::${schemaKey}`, () => {
 			label.label = this.#label();
 			resetBtn.opacity = this.#isCustomized() ? 1 : 0;
 			resetBtn.sensitive = this.#isCustomized();
 		});
-		this.connect('destroy', () => this.#settings.disconnect(handlerId));
 	}
 
 	#isCustomized() {

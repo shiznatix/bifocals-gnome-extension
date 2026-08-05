@@ -13,9 +13,9 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@girs/gnome-shell": "50.0.4",
-    "eslint": "10.7.0",
+    "eslint": "10.8.0",
     "jiti": "2.7.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.64.0"
+    "typescript-eslint": "8.66.0"
   }
 }
