@@ -8,11 +8,14 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@girs/gnome-shell": "50.0.4",
+    "@rh/eslint": "file:../redhouse-platform/node/eslint",
+    "@rh/tsconfig": "file:../redhouse-platform/node/tsconfig",
     "eslint": "10.8.0",
     "jiti": "2.7.0",
     "typescript": "6.0.3",
