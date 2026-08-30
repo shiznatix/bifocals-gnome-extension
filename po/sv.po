@@ -52,6 +52,14 @@ msgstr "Mitten av skärm storlekar"
 msgid "% of screen"
 msgstr "% av skärm"
 
+#. Increase / decrease group title
+msgid "Increase / Decrease Size"
+msgstr "Öka / minska storlek"
+
+#. Increase / decrease group description
+msgid "% of screen per step"
+msgstr "% av skärm per steg"
+
 #. Resize size labels
 msgid "Small"
 msgstr "Liten"
@@ -61,6 +69,10 @@ msgstr "Medel"
 
 msgid "Large"
 msgstr "Stor"
+
+#. Increase / decrease step row label
+msgid "Step"
+msgstr "Steg"
 
 #. Tooltip for per-row reset button in resize groups
 msgid "Restore default"
@@ -144,6 +156,12 @@ msgstr "Växla förankring uppåt"
 msgid "Cycle bottom anchoring"
 msgstr "Växla förankring nedåt"
 
+msgid "Increase window size"
+msgstr "Öka fönsterstorlek"
+
+msgid "Decrease window size"
+msgstr "Minska fönsterstorlek"
+
 msgid "Move one monitor left"
 msgstr "Flytta en skärm åt vänster"
 
@@ -215,3 +233,6 @@ msgstr "Mitten av skärm stor storlek"
 
 msgid "Midscreen large size enabled"
 msgstr "Mitten av skärm stor storlek aktiverad"
+
+msgid "Increase / decrease step"
+msgstr "Steg för öka / minska"

@@ -5,6 +5,10 @@ Window size cycling between up to 3 percentage values based on the anchor point.
 * Top / Bottom - keeps the window's horizontal position and width, and cycles through the percentage of the screen height.
 * Mid-screen - centres the window and cycles through the percentage of both screen axes.
 
+Grow / shrink windows by a configurable step.
+* A side resting on a screen edge stays put, so an anchored window keeps its anchor and only its free side moves.
+* A window clear of the screen edges grows and shrinks on all sides at once, staying where it is.
+
 Move windows between screens / monitors.
 * Preserves the relative dimensions, so the window takes the same relative space and location as it did on the previous screen.
 * Does not get stuck when screens have different sizes or dimensions.

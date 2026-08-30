@@ -1,6 +1,12 @@
 import type Meta from 'gi://Meta';
 
-import { Anchor, makeDimensions, type RectangleDimensions } from './ext-geometry.js';
+import {
+	Anchor,
+	makeDimensions,
+	rectsEqual,
+	resizeDimensions,
+	type RectangleDimensions,
+} from './ext-geometry.js';
 import { BifocalState } from './ext-state.js';
 import { BifocalWindow } from './ext-window.js';
 
@@ -51,6 +57,25 @@ export class BifocalAction {
 			dimensions.y = workArea.y;
 		} else if (anchor === 'bottom') {
 			dimensions.y = workArea.y + workArea.h - value;
+		}
+
+		this.#apply(window, dimensions);
+	}
+
+	// A positive fraction of the work area grows the window, a negative one shrinks it
+	resizeBy(fraction: number) {
+		const window = BifocalWindow.focused();
+		const { rect, workArea } = window;
+		const dimensions = resizeDimensions(
+			rect,
+			workArea,
+			Math.round(workArea.w * fraction),
+			Math.round(workArea.h * fraction),
+		);
+
+		// Already as big or as small as it goes, so leave the restore state alone
+		if (rectsEqual(dimensions, rect)) {
+			return;
 		}
 
 		this.#apply(window, dimensions);

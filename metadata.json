@@ -1,7 +1,7 @@
 {
 	"name": "Bifocals Window Placer",
 	"uuid": "bifocals@shiznatix",
-	"version-name": "5.0",
+	"version-name": "6.0",
 	"url": "https://github.com/shiznatix/bifocals-gnome-extension",
 	"description": "REPLACED WITH CONTENTS OF description.txt",
 	"settings-schema": "org.gnome.shell.extensions.bifocals",

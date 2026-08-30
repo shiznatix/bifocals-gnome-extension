@@ -28,6 +28,16 @@
       <summary>Cycle bottom anchoring</summary>
     </key>
 
+    <key type="as" name="increase-size">
+      <default><![CDATA[['<Super><Ctrl>equal']]]></default>
+      <summary>Increase window size</summary>
+    </key>
+
+    <key type="as" name="decrease-size">
+      <default><![CDATA[['<Super><Ctrl>minus']]]></default>
+      <summary>Decrease window size</summary>
+    </key>
+
     <key type="as" name="move-monitor-left">
       <default><![CDATA[['<Super><Ctrl>Home']]]></default>
       <summary>Move one monitor left</summary>
@@ -131,6 +141,11 @@
     <key type="b" name="resize-midscreen-large-enabled">
       <default>true</default>
       <summary>Midscreen large size enabled</summary>
+    </key>
+
+    <key type="i" name="resize-step">
+      <default>5</default>
+      <summary>Increase / decrease step</summary>
     </key>
 
     <!--

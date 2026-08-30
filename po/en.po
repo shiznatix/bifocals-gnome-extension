@@ -52,6 +52,14 @@ msgstr "Midscreen Sizes"
 msgid "% of screen"
 msgstr "% of screen"
 
+#. Increase / decrease group title
+msgid "Increase / Decrease Size"
+msgstr "Increase / Decrease Size"
+
+#. Increase / decrease group description
+msgid "% of screen per step"
+msgstr "% of screen per step"
+
 #. Resize size labels
 msgid "Small"
 msgstr "Small"
@@ -61,6 +69,10 @@ msgstr "Medium"
 
 msgid "Large"
 msgstr "Large"
+
+#. Increase / decrease step row label
+msgid "Step"
+msgstr "Step"
 
 #. Tooltip for per-row reset button in resize groups
 msgid "Restore default"
@@ -144,6 +156,12 @@ msgstr "Cycle top anchoring"
 msgid "Cycle bottom anchoring"
 msgstr "Cycle bottom anchoring"
 
+msgid "Increase window size"
+msgstr "Increase window size"
+
+msgid "Decrease window size"
+msgstr "Decrease window size"
+
 msgid "Move one monitor left"
 msgstr "Move one monitor left"
 
@@ -215,3 +233,6 @@ msgstr "Midscreen large size"
 
 msgid "Midscreen large size enabled"
 msgstr "Midscreen large size enabled"
+
+msgid "Increase / decrease step"
+msgstr "Increase / decrease step"

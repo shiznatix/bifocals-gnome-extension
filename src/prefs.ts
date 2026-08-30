@@ -4,6 +4,7 @@ import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/
 import { ShortcutsGroup } from './prefs-shortcuts.js';
 import { ResizeGroup } from './prefs-resize-group.js';
 import { addResetAllGroup } from './prefs-reset-all.js';
+import { StepGroup } from './prefs-step-group.js';
 
 const shortcuts = [
 	'cycle-left',
@@ -11,6 +12,8 @@ const shortcuts = [
 	'cycle-top',
 	'cycle-bottom',
 	'cycle-midscreen',
+	'increase-size',
+	'decrease-size',
 	'move-monitor-left',
 	'move-monitor-right',
 	'move-monitor-up',
@@ -38,6 +41,7 @@ const resizeKeys = [
 	'resize-midscreen-medium-enabled',
 	'resize-midscreen-large',
 	'resize-midscreen-large-enabled',
+	'resize-step',
 ] as const;
 
 const _title = () => _('Bifocals Preferences');
@@ -49,6 +53,8 @@ const _topBottomTitle = () => _('Top / Bottom Sizes');
 const _topBottomDesc = () => _('% of screen height');
 const _midscreenTitle = () => _('Midscreen Sizes');
 const _midscreenDesc = () => _('% of screen');
+const _stepTitle = () => _('Increase / Decrease Size');
+const _stepDesc = () => _('% of screen per step');
 
 export default class BifocalsPrefs extends ExtensionPreferences {
 	async fillPreferencesWindow(window: Adw.PreferencesWindow) {
@@ -81,6 +87,13 @@ export default class BifocalsPrefs extends ExtensionPreferences {
 			keyPrefix: 'resize-midscreen',
 			title: _midscreenTitle(),
 			description: _midscreenDesc(),
+		}));
+
+		page.add(new StepGroup({
+			settings,
+			key: 'resize-step',
+			title: _stepTitle(),
+			description: _stepDesc(),
 		}));
 
 		addResetAllGroup(page, settings, [...shortcuts, ...resizeKeys], window);

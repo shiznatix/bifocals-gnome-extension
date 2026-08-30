@@ -8,6 +8,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { BifocalAction } from './ext-action.js';
 
 const RESTORE_KEY = 'restore-window';
+const STEP_KEY = 'resize-step';
 
 // Shortcuts renamed in 5.0, as [old, new]
 const RENAMED_KEYS: [string, string][] = [
@@ -48,6 +49,11 @@ export default class BifocalsExtension extends Extension {
 			(fractions) => action.anchored('top', fractions));
 		this.#addResizeKeybinding(settings, 'cycle-bottom', 'resize-top-bottom',
 			(fractions) => action.anchored('bottom', fractions));
+
+		this.#addKeybinding(settings, 'increase-size',
+			() => action.resizeBy(this.#getStep(settings)));
+		this.#addKeybinding(settings, 'decrease-size',
+			() => action.resizeBy(-this.#getStep(settings)));
 
 		this.#addKeybinding(settings, 'move-monitor-left',
 			() => action.moveToMonitor(Meta.DisplayDirection.LEFT));
@@ -100,6 +106,10 @@ export default class BifocalsExtension extends Extension {
 		return (['small', 'medium', 'large'] as const)
 			.filter((size) => settings.get_boolean(`${key}-${size}-enabled`))
 			.map((size) => settings.get_int(`${key}-${size}`) / 100);
+	}
+
+	#getStep(settings: Gio.Settings): number {
+		return settings.get_int(STEP_KEY) / 100;
 	}
 
 	#addResizeKeybinding(

@@ -52,6 +52,14 @@ msgstr "Ekraani keskel suurused"
 msgid "% of screen"
 msgstr "% ekraanist"
 
+#. Increase / decrease group title
+msgid "Increase / Decrease Size"
+msgstr "Suurenda / vähenda suurust"
+
+#. Increase / decrease group description
+msgid "% of screen per step"
+msgstr "% ekraanist sammu kohta"
+
 #. Resize size labels
 msgid "Small"
 msgstr "Väike"
@@ -61,6 +69,10 @@ msgstr "Keskmine"
 
 msgid "Large"
 msgstr "Suur"
+
+#. Increase / decrease step row label
+msgid "Step"
+msgstr "Samm"
 
 #. Tooltip for per-row reset button in resize groups
 msgid "Restore default"
@@ -144,6 +156,12 @@ msgstr "Vaheta üles ankurdamist"
 msgid "Cycle bottom anchoring"
 msgstr "Vaheta alla ankurdamist"
 
+msgid "Increase window size"
+msgstr "Suurenda akna suurust"
+
+msgid "Decrease window size"
+msgstr "Vähenda akna suurust"
+
 msgid "Move one monitor left"
 msgstr "Liiguta üks ekraan vasakule"
 
@@ -215,3 +233,6 @@ msgstr "Ekraani keskel suur suurus"
 
 msgid "Midscreen large size enabled"
 msgstr "Ekraani keskel suur suurus lubatud"
+
+msgid "Increase / decrease step"
+msgstr "Suurendamise / vähendamise samm"

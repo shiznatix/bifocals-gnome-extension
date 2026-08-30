@@ -52,6 +52,14 @@ msgstr "Dimensioni centro schermo"
 msgid "% of screen"
 msgstr "% dello schermo"
 
+#. Increase / decrease group title
+msgid "Increase / Decrease Size"
+msgstr "Aumenta / riduci dimensione"
+
+#. Increase / decrease group description
+msgid "% of screen per step"
+msgstr "% dello schermo per passo"
+
 #. Resize size labels
 msgid "Small"
 msgstr "Piccolo"
@@ -61,6 +69,10 @@ msgstr "Medio"
 
 msgid "Large"
 msgstr "Grande"
+
+#. Increase / decrease step row label
+msgid "Step"
+msgstr "Passo"
 
 #. Tooltip for per-row reset button in resize groups
 msgid "Restore default"
@@ -144,6 +156,12 @@ msgstr "Scorri ancoraggio in alto"
 msgid "Cycle bottom anchoring"
 msgstr "Scorri ancoraggio in basso"
 
+msgid "Increase window size"
+msgstr "Aumenta la dimensione della finestra"
+
+msgid "Decrease window size"
+msgstr "Riduci la dimensione della finestra"
+
 msgid "Move one monitor left"
 msgstr "Sposta di un monitor a sinistra"
 
@@ -215,3 +233,6 @@ msgstr "Dimensione grande centro schermo"
 
 msgid "Midscreen large size enabled"
 msgstr "Dimensione grande centro schermo attivata"
+
+msgid "Increase / decrease step"
+msgstr "Passo di aumento / riduzione"
